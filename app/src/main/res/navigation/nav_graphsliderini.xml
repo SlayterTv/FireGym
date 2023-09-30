@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graphsliderini"
+    app:startDestination="@id/slider1Fragment">
+
+    <fragment
+        android:id="@+id/slider1Fragment"
+        android:name="com.slaytertv.firegym.ui.view.sliderini.Slider1Fragment"
+        android:label="fragment_slider1"
+        tools:layout="@layout/fragment_slider1" >
+        <action
+            android:id="@+id/action_slider1Fragment_to_slider2Fragment"
+            app:destination="@id/slider2Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/slider2Fragment"
+        android:name="com.slaytertv.firegym.ui.view.sliderini.Slider2Fragment"
+        android:label="fragment_slider2"
+        tools:layout="@layout/fragment_slider2" >
+        <action
+            android:id="@+id/action_slider2Fragment_to_slider3Fragment"
+            app:destination="@id/slider3Fragment" />
+        <action
+            android:id="@+id/action_slider2Fragment_to_slider1Fragment"
+            app:destination="@id/slider1Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/slider3Fragment"
+        android:name="com.slaytertv.firegym.ui.view.sliderini.Slider3Fragment"
+        android:label="fragment_slider3"
+        tools:layout="@layout/fragment_slider3" >
+        <action
+            android:id="@+id/action_slider3Fragment_to_slider2Fragment"
+            app:destination="@id/slider2Fragment" />
+    </fragment>
+</navigation>

@@ -3,6 +3,9 @@ plugins {
     id("org.jetbrains.kotlin.android")
     // Add the Google services Gradle plugin
     id("com.google.gms.google-services")
+    //Hilt To simplify Dagger-related infrastructure for Android apps -
+    // Hilt Para simplificar la infraestructura relacionada con Dagger para aplicaciones de Android
+    id ("dagger.hilt.android.plugin")
     //Kapt is the Kotlin Annotation Processing Tool - Kapt es la herramienta de procesamiento de anotaciones de Kotlin
     id ("kotlin-kapt")
     id ("kotlin-parcelize")
@@ -71,15 +74,16 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
     // Dagger Hilt
-    implementation ("com.google.dagger:hilt-android:2.44")
-    kapt ("com.google.dagger:hilt-android-compiler:2.44")
-    kapt ("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0")
+    implementation ("com.google.dagger:hilt-android:2.48")
+    kapt ("com.google.dagger:hilt-compiler:2.48")
     //retrofit
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     //glide
     implementation ("com.github.bumptech.glide:glide:4.12.0") // Reemplaza con la versión más reciente
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
+}
 
-
+kapt {
+    correctErrorTypes = true
 }
