@@ -18,9 +18,7 @@
             android:exported="false" />
         <activity
             android:name=".AuthActivity"
-            android:exported="false"
-            android:label="@string/title_activity_auth"
-            android:theme="@style/Theme.FireGym" />
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />

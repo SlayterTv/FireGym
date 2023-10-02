@@ -51,7 +51,6 @@ class SplashActivity : AppCompatActivity() {
             if (viewModel.isUserLoggedIn()) {
                 navigateToActivity(MainActivity())
             } else {
-                toast("inicie sesion")
                 navigateToActivity(AuthActivity())
             }
         }else{

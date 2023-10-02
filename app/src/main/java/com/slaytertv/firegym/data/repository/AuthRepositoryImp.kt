@@ -218,16 +218,6 @@ class AuthRepositoryImp(
     }
 
     //anonymous
-    override fun signInAnonymously(callback: (Boolean, String?) -> Unit) {
-        auth.signInAnonymously()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    callback(true, null)
-                } else {
-                    callback(false, task.exception?.message ?: "Error desconocido")
-                }
-            }
-    }
     override fun getCurrentUserId(): String? {
         return auth.currentUser?.uid
     }

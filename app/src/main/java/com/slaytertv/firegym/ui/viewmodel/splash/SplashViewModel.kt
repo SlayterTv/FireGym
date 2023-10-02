@@ -13,11 +13,8 @@ class SplashViewModel @Inject constructor(private val authRepository: AuthReposi
         return authRepository.getCurrentUserId() != null
     }
 
-    fun signInAnonymously(callback: (Boolean, String?) -> Unit) {
-        authRepository.signInAnonymously(callback)
-    }
 
-    // Rest of your ViewModel code...
+
 }
 class SplashViewModelFactory @Inject constructor(private val auth: AuthRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

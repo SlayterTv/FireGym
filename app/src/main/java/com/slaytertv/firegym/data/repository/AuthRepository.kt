@@ -18,7 +18,6 @@ interface AuthRepository {
     fun storeSession(id: String, result: (UserItem?) -> Unit)
     //mandar session
     fun getSession(result: (UserItem?) -> Unit)
-    //auth anonymous
-    fun signInAnonymously(callback: (Boolean, String?) -> Unit)
+
     fun getCurrentUserId(): String?
 }
