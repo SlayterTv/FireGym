@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.slaytertv.firegym.ui.view.home.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/calculatorFragment"
+        android:name="com.slaytertv.firegym.ui.view.calculator.CalculatorFragment"
+        android:label="Calculator"
+        tools:layout="@layout/fragment_calculator" />
+
+    <fragment
+        android:id="@+id/exerciseListFragment"
+        android:name="com.slaytertv.firegym.ui.view.exerciselist.ExerciseListFragment"
+        android:label="Exercise List"
+        tools:layout="@layout/fragment_exercise_list" />
+
+</navigation>

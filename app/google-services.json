@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "525791157710",
+    "project_id": "firegym-666",
+    "storage_bucket": "firegym-666.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:525791157710:android:578f8cb2ecd5bc5b6e9f9f",
+        "android_client_info": {
+          "package_name": "com.slaytertv.firegym"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "525791157710-g0ptv9eada0ciamq023tgepd611sk6uh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIShv1bU8DtFLeuZKRU-wDIDYFOrCWjyc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "525791157710-g0ptv9eada0ciamq023tgepd611sk6uh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
