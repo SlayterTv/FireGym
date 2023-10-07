@@ -7,6 +7,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.slaytertv.firegym.data.repository.AuthRepository
 import com.slaytertv.firegym.data.repository.AuthRepositoryImp
+import com.slaytertv.firegym.data.repository.ExerciseRepository
+import com.slaytertv.firegym.data.repository.ExerciseRepositoryImp
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,18 +29,18 @@ object RepositoryModule {
     ): CardsRepository {
         return CardsRepositoryImpl(auth,database,databaseD)
     }*/
-    /*
+
     //indicamos q nuestro task repositoey se use con imp
     @Provides
     @Singleton
-    fun provideTaskRepository(
+    fun provideExerciseRepository(
         database: FirebaseDatabase
-    ): TaskRepository {
-        return TaskRepositoryImp(database)
+    ): ExerciseRepository {
+        return ExerciseRepositoryImp(database)
     }
-    //para usar firebaseAuth, firestore,sharedpreferences y gson
-    */
 
+
+    //para usar firebaseAuth, firestore,sharedpreferences y gson
     //cuando se utilize auth tambien colocamos las dependencias q usaran
     @Provides
     @Singleton

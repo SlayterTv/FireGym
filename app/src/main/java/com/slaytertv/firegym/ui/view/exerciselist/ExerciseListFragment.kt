@@ -5,56 +5,76 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.slaytertv.firegym.R
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.slaytertv.firegym.databinding.FragmentExerciseListBinding
+import com.slaytertv.firegym.ui.viewmodel.exerciselist.ExerciseListViewModel
+import com.slaytertv.firegym.util.UiState
+import com.slaytertv.firegym.util.toast
+import dagger.hilt.android.AndroidEntryPoint
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ExerciseListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class ExerciseListFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    val TAG :String ="HomeFragment"
+    //creamos binding
+    lateinit var binding: FragmentExerciseListBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    val viewModelExerciseList: ExerciseListViewModel by viewModels()
+    val adapterexerciseList by lazy {
+        ExerciseListAdapter(
+            onItemClicked = { pos, item ->
+                toast(item.toString())
+            }
+        )
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_exercise_list, container, false)
+        if (this::binding.isInitialized){
+            return binding.root
+        }else {
+            binding = FragmentExerciseListBinding.inflate(layoutInflater)
+            return binding.root
+        }
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ExerciseListFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ExerciseListFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        botones()
+        observer()
+        val staggeredGridLayoutManagerB = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
+        binding.recyclerejericios.layoutManager = staggeredGridLayoutManagerB
+        binding.recyclerejericios.adapter = adapterexerciseList
+    }
+
+    private fun observer() {
+        viewModelExerciseList.exerciselist.observe(viewLifecycleOwner) { state ->
+            when(state){
+                is UiState.Loading -> {
+                    //binding.homeProgresbarTop.show()
+                }
+                is UiState.Failure -> {
+                    //binding.homeProgresbarTop.hide()
+                    toast(state.error)
+                }
+                is UiState.Sucess -> {
+                    //binding.homeProgresbarTop.hide()
+                    adapterexerciseList.updateList(state.data.toMutableList())
                 }
             }
+        }
+
+    }
+
+    private fun botones() {
+        binding.neck.setOnClickListener {
+            viewModelExerciseList.getExerciselist("neck")
+        }
+        binding.cardio.setOnClickListener {
+            viewModelExerciseList.getExerciselist("cardio")
+        }
     }
 }
