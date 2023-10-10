@@ -6,11 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.slaytertv.firegym.R
+import com.slaytertv.firegym.data.model.ExerciseListItem
 import com.slaytertv.firegym.databinding.FragmentExerciseListBinding
 import com.slaytertv.firegym.ui.viewmodel.exerciselist.ExerciseListViewModel
 import com.slaytertv.firegym.util.UiState
+import com.slaytertv.firegym.util.hide
+import com.slaytertv.firegym.util.show
 import com.slaytertv.firegym.util.toast
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,7 +29,17 @@ class ExerciseListFragment : Fragment() {
     val adapterexerciseList by lazy {
         ExerciseListAdapter(
             onItemClicked = { pos, item ->
-                toast(item.toString())
+                val bundle = Bundle().apply {
+                    putParcelable(ARG_CARD_ITEM, item)
+                }
+                findNavController().navigate(R.id.action_exerciseListFragment_to_exerciseFragment,bundle)
+            }
+        )
+    }
+    val adapterexerciseListCatego by lazy {
+        ExerciseListCategoAdapter(
+            onItemClicked = { pos, item ->
+                llamadoviewmodel(item.tag)
             }
         )
     }
@@ -43,11 +58,15 @@ class ExerciseListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        botones()
         observer()
         val staggeredGridLayoutManagerB = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
         binding.recyclerejericios.layoutManager = staggeredGridLayoutManagerB
         binding.recyclerejericios.adapter = adapterexerciseList
+
+        val staggeredGridLayoutManagerC = StaggeredGridLayoutManager(1, LinearLayoutManager.HORIZONTAL)
+        binding.recyclercatego.layoutManager = staggeredGridLayoutManagerC
+        binding.recyclercatego.adapter =adapterexerciseListCatego
+
     }
 
     private fun observer() {
@@ -66,15 +85,12 @@ class ExerciseListFragment : Fragment() {
                 }
             }
         }
-
     }
 
-    private fun botones() {
-        binding.neck.setOnClickListener {
-            viewModelExerciseList.getExerciselist("neck")
-        }
-        binding.cardio.setOnClickListener {
-            viewModelExerciseList.getExerciselist("cardio")
-        }
+    private fun llamadoviewmodel(tipo:String){
+        viewModelExerciseList.getExerciselist(tipo)
+    }
+    companion object {
+        private const val ARG_CARD_ITEM = "arg_card_item"
     }
 }
