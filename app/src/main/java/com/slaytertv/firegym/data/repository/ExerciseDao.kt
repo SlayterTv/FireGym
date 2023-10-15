@@ -1,0 +1,19 @@
+package com.slaytertv.firegym.data.repository
+
+import androidx.lifecycle.LiveData
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import com.slaytertv.firegym.data.model.ExerciseEntity
+import com.slaytertv.firegym.util.UiState
+
+@Dao
+interface ExerciseDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertExercise(exercise: ExerciseEntity)
+
+
+    @Query("SELECT * FROM exercise_table")
+    fun getAllExercises(): LiveData<List<ExerciseEntity>>
+}
