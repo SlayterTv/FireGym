@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.slaytertv.firegym.AuthActivity
 import com.slaytertv.firegym.MainActivity
 import com.slaytertv.firegym.R
+import com.slaytertv.firegym.SplashActivity
 import com.slaytertv.firegym.databinding.FragmentLoginBinding
 import com.slaytertv.firegym.ui.viewmodel.auth.LoginViewModel
 import com.slaytertv.firegym.util.UiState
@@ -78,7 +79,7 @@ class LoginFragment : Fragment() {
                     handleLoading(isLoading = false)
                     //analitycs para informar wel login
                     anallogin(binding.passEt.text.toString())
-                    val authIntent = Intent(requireContext(), MainActivity::class.java)
+                    val authIntent = Intent(requireContext(), SplashActivity::class.java)
                     mainLauncher.launch(authIntent)
                     //toast(state.data)
                     //findNavController().navigate(R.id.action_loginFragment_to_homeActivity)

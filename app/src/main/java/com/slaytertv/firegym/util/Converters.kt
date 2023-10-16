@@ -7,24 +7,37 @@ import com.slaytertv.firegym.data.model.BarDataItem
 
 class Converters {
     @TypeConverter
-    fun fromString(value: String): List<String> {
+    fun fromString(value: String?): List<String>? {
+        if (value == null) {
+            return null
+        }
         val listType = object : TypeToken<List<String>>() {}.type
         return Gson().fromJson(value, listType)
     }
 
     @TypeConverter
-    fun fromList(list: List<String>): String {
+    fun fromList(list: List<String>?): String? {
+        if (list == null) {
+            return null
+        }
         return Gson().toJson(list)
     }
 
     @TypeConverter
-    fun fromBarDataItemList(value: String): List<BarDataItem> {
+    fun fromBarDataItemList(value: String?): List<BarDataItem>? {
+        if (value == null) {
+            return null
+        }
         val listType = object : TypeToken<List<BarDataItem>>() {}.type
         return Gson().fromJson(value, listType)
     }
 
     @TypeConverter
-    fun toBarDataItemList(list: List<BarDataItem>): String {
+    fun toBarDataItemList(list: List<BarDataItem>?): String? {
+        if (list == null) {
+            return null
+        }
         return Gson().toJson(list)
     }
+
 }

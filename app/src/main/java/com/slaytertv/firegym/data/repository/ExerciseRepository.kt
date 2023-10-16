@@ -5,4 +5,5 @@ import com.slaytertv.firegym.util.UiState
 
 interface ExerciseRepository {
     fun getCateExcersice(Idcatego: String,result: (UiState<List<ExerciseItem>>) -> Unit)
+    fun getAllExcersice(result: (UiState<List<ExerciseItem>>) -> Unit)
 }

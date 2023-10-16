@@ -36,5 +36,29 @@ class ExerciseRepositoryImp(
         })
     }
 
+    override fun getAllExcersice(result: (UiState<List<ExerciseItem>>) -> Unit) {
+        val reference = database.getReference("ejercicios")
+        val query = reference.orderByChild("category")
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val exercises = mutableListOf<ExerciseItem>()
+                for (exerciseSnapshot in dataSnapshot.children) {
+                    // Obtener los datos de cada ejercicio
+                    val ejercicio = exerciseSnapshot.getValue(ExerciseItem::class.java)
+                    if (ejercicio != null) {
+                        ejercicio.name = exerciseSnapshot.key.toString()
+                        exercises.add(ejercicio)
+                    }
+                }
+                result.invoke(UiState.Sucess(exercises))
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Manejar errores si es necesario
+                println("Error: ${databaseError.message}")
+            }
+        })
+    }
+
 
 }

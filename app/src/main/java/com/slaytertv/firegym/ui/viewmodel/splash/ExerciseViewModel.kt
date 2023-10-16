@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.slaytertv.firegym.data.model.ExerciseEntity
 import com.slaytertv.firegym.data.repository.ExerciseDao
-import com.slaytertv.firegym.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

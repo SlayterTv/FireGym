@@ -12,6 +12,8 @@ object SharedPrefConstants {
     val USER_SESSION = "user_session"
     //indica si se inciio el slider inicial la primera vez
     val SLIDER_INICIAL = "true"
+    val DESCARGADODATPS = "true"
+
 }
 //
 object FirebaseStorageConstants {
