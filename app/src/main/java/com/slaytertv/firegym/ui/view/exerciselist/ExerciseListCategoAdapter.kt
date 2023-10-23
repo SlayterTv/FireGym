@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.slaytertv.firegym.R.mipmap
 import com.slaytertv.firegym.data.model.ExerciseListItem
 import com.slaytertv.firegym.databinding.ItemExerciselistCategoryBinding
 
@@ -12,21 +13,21 @@ class ExerciseListCategoAdapter(
     val onItemClicked: (Int, ExerciseListItem) -> Unit,
 ) : RecyclerView.Adapter<ExerciseListCategoAdapter.MyViewHolder>() {
     private var list: MutableList<ExerciseListItem> = arrayListOf(
-        ExerciseListItem("Neck","","neck"),
-        ExerciseListItem("Trapezius","","trapezius"),
-        ExerciseListItem("Shoulders","","shoulders"),
-        ExerciseListItem("Chest","","chest"),
-        ExerciseListItem("Back/Wing","","back"),
-        ExerciseListItem("Erector Spinae","","erector-spinae"),
-        ExerciseListItem("Biceps","","biceps"),
-        ExerciseListItem("Triceps","","triceps"),
-        ExerciseListItem("Forearm","","forearm"),
-        ExerciseListItem("Abs/Core","","abs"),
-        ExerciseListItem("Leg","","leg"),
-        ExerciseListItem("Calf","","calf"),
-        ExerciseListItem("Hips","","hip"),
-        ExerciseListItem("Cardio","","cardio"),
-        ExerciseListItem("Full Body","","full-body"),
+        ExerciseListItem("Neck", mipmap.neck,"neck"),
+        ExerciseListItem("Trapezius",mipmap.trapezious,"trapezius"),
+        ExerciseListItem("Shoulders",mipmap.shoulders,"shoulders"),
+        ExerciseListItem("Chest",mipmap.cheast,"chest"),
+        ExerciseListItem("Back/Wing",mipmap.backwing,"back"),
+        ExerciseListItem("Erector Spinae",mipmap.erectorspinae,"erector-spinae"),
+        ExerciseListItem("Biceps",mipmap.biceps,"biceps"),
+        ExerciseListItem("Triceps",mipmap.tricpes,"triceps"),
+        ExerciseListItem("Forearm",mipmap.forearm,"forearm"),
+        ExerciseListItem("Abs/Core",mipmap.abs,"abs"),
+        ExerciseListItem("Leg",mipmap.leg,"leg"),
+        ExerciseListItem("Calf",mipmap.calf,"calf"),
+        ExerciseListItem("Hips",mipmap.hip,"hip"),
+        ExerciseListItem("Cardio",mipmap.crdio,"cardio"),
+        ExerciseListItem("Full Body",mipmap.fullbody,"full-body"),
     )
 
     override fun onCreateViewHolder(

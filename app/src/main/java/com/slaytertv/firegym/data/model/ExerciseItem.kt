@@ -27,11 +27,12 @@ data class BarDataItem(
 @Parcelize
 data class ExerciseListItem(
     val small_text: String="",
-    val image: String="",
+    val image: Int =0,
     val tag:String=""
 ): Parcelable
 
 
+@Parcelize
 @Entity(tableName = "exercise_table")
 data class ExerciseEntity(
     @PrimaryKey(autoGenerate = true)
@@ -44,4 +45,4 @@ data class ExerciseEntity(
     val spec_group: List<String>? = null,
     val bar_data: List<BarDataItem>? = null,
     var name: String
-)
+): Parcelable

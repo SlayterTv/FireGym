@@ -9,9 +9,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
-import com.slaytertv.firegym.data.model.ExerciseItem
+import com.slaytertv.firegym.data.model.ExerciseEntity
 import com.slaytertv.firegym.databinding.FragmentExerciseBinding
-import com.slaytertv.firegym.util.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,11 +32,10 @@ class ExerciseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recuperardatoscarta()
-
     }
 
     private fun recuperardatoscarta() {
-        val cardItem = arguments?.getParcelable<ExerciseItem>(ExerciseFragment.ARG_CARD_ITEM)
+        val cardItem = arguments?.getParcelable<ExerciseEntity>(ExerciseFragment.ARG_CARD_ITEM)
 
 
         val setName: TextView = binding.textName
@@ -79,7 +77,7 @@ class ExerciseFragment : Fragment() {
 
     companion object {
         private const val ARG_CARD_ITEM = "arg_card_item"
-        fun newInstance(cardItem: ExerciseItem): ExerciseFragment {
+        fun newInstance(cardItem: ExerciseEntity): ExerciseFragment {
             val args = Bundle().apply {
                 putParcelable(ARG_CARD_ITEM,cardItem)
             }

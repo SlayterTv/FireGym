@@ -10,12 +10,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.slaytertv.firegym.R
-import com.slaytertv.firegym.data.model.ExerciseListItem
 import com.slaytertv.firegym.databinding.FragmentExerciseListBinding
 import com.slaytertv.firegym.ui.viewmodel.exerciselist.ExerciseListViewModel
 import com.slaytertv.firegym.util.UiState
-import com.slaytertv.firegym.util.hide
-import com.slaytertv.firegym.util.show
 import com.slaytertv.firegym.util.toast
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,6 +37,7 @@ class ExerciseListFragment : Fragment() {
         ExerciseListCategoAdapter(
             onItemClicked = { pos, item ->
                 llamadoviewmodel(item.tag)
+                viewModelExerciseList.getExercisesByCategory(item.tag)
             }
         )
     }
@@ -70,19 +68,11 @@ class ExerciseListFragment : Fragment() {
     }
 
     private fun observer() {
-        viewModelExerciseList.exerciselist.observe(viewLifecycleOwner) { state ->
-            when(state){
-                is UiState.Loading -> {
-                    //binding.homeProgresbarTop.show()
-                }
-                is UiState.Failure -> {
-                    //binding.homeProgresbarTop.hide()
-                    toast(state.error)
-                }
-                is UiState.Sucess -> {
-                    //binding.homeProgresbarTop.hide()
-                    adapterexerciseList.updateList(state.data.toMutableList())
-                }
+        viewModelExerciseList.exerciselistroom.observe(viewLifecycleOwner) { state ->
+            if(state.isNotEmpty()){
+                adapterexerciseList.updateList(state.toMutableList())
+            }else{
+
             }
         }
     }

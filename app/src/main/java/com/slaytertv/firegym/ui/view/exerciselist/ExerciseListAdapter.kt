@@ -5,13 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.slaytertv.firegym.data.model.ExerciseItem
+import com.slaytertv.firegym.data.model.ExerciseEntity
 import com.slaytertv.firegym.databinding.ItemExerciselistBinding
 
 class ExerciseListAdapter(
-    val onItemClicked: (Int, ExerciseItem) -> Unit,
+    val onItemClicked: (Int, ExerciseEntity) -> Unit,
 ) :RecyclerView.Adapter<ExerciseListAdapter.MyViewHolder>() {
-    private var list: MutableList<ExerciseItem> = arrayListOf()
+    private var list: MutableList<ExerciseEntity> = arrayListOf()
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -24,7 +24,7 @@ class ExerciseListAdapter(
         val item = list[position]
         holder.bind(item)
     }
-    fun updateList(list: MutableList<ExerciseItem>){
+    fun updateList(list: MutableList<ExerciseEntity>){
         this.list = list
         notifyDataSetChanged()
     }
@@ -33,7 +33,7 @@ class ExerciseListAdapter(
         return list.size
     }
     inner class MyViewHolder(val binding: ItemExerciselistBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: ExerciseItem){
+        fun bind(item: ExerciseEntity){
             binding.exerciseName.setText(item.name)
             Glide.with(binding.root).load(item.foto) .transform(
                 RoundedCorners(25)

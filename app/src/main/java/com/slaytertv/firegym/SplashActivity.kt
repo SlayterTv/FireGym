@@ -7,12 +7,14 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.slaytertv.firegym.data.model.ExerciseEntity
+import com.slaytertv.firegym.databinding.ActivitySplashBinding
 import com.slaytertv.firegym.ui.viewmodel.exerciselist.ExerciseListViewModel
 import com.slaytertv.firegym.ui.viewmodel.splash.ExerciseViewModel
 import com.slaytertv.firegym.ui.viewmodel.splash.SplashViewModel
@@ -36,9 +38,14 @@ class SplashActivity : AppCompatActivity() {
     private val SPLASH_DELAY: Long = 10000 // 2 segundos
     private val viewModelx: ExerciseViewModel by viewModels()
     val viewModelExerciseList: ExerciseListViewModel by viewModels()
+    private lateinit var binding: ActivitySplashBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
+        binding = ActivitySplashBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        val fadeInOutAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in_out)
+        binding.imageView.startAnimation(fadeInOutAnimation) // Reemplaza imageView con la vista que desees anima
 
         viewModel = ViewModelProvider(this, viewModelFactory)[SplashViewModel::class.java]
     }

@@ -43,10 +43,10 @@ class CalculatorFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.button2.setOnClickListener {
+        /*binding.button2.setOnClickListener {
             viewModelExerciseList.getAllExerciseList()
         }
-        /*binding.button.setOnClickListener {
+        binding.button.setOnClickListener {
             val exercise = ExerciseEntity(
                 category = "Ejercicio",
                 link = "https://ejemplo.com",
@@ -60,7 +60,7 @@ class CalculatorFragment : Fragment() {
             )
             viewModel.insertExercise(exercise)
 
-        }*/
+        }
         viewModel.allExercises.observe(viewLifecycleOwner) { exercises ->
             if (exercises.isNotEmpty()) {
                 // Procesa los ejercicios según tus necesidades
@@ -105,7 +105,7 @@ class CalculatorFragment : Fragment() {
 
                 }
             }
-        }
+        }*/
 
     }
     suspend fun sacarblob(url: String): ByteArray = withContext(Dispatchers.IO) {
