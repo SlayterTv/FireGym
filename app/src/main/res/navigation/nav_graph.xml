@@ -30,5 +30,10 @@
         android:name="com.slaytertv.firegym.ui.view.exerciselist.ExerciseFragment"
         android:label="fragment_exercise"
         tools:layout="@layout/fragment_exercise" />
+    <fragment
+        android:id="@+id/myOwnWorkoutFragment"
+        android:name="com.slaytertv.firegym.ui.view.ownworkout.MyOwnWorkoutFragment"
+        android:label="fragment_my_own_workout"
+        tools:layout="@layout/fragment_my_own_workout" />
 
 </navigation>

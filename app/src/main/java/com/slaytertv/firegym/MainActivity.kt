@@ -38,7 +38,8 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.homeFragment,
                 R.id.calculatorFragment,
-                R.id.exerciseListFragment
+                R.id.exerciseListFragment,
+                R.id.myOwnWorkoutFragment
             ),
             drawerLayout
         )

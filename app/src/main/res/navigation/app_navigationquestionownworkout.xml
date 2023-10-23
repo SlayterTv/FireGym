@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_navigationquestionownworkout"
+    app:startDestination="@id/questionunoFragment">
+
+    <fragment
+        android:id="@+id/questionunoFragment"
+        android:name="com.slaytertv.firegym.ui.view.ownworkout.QuestionunoFragment"
+        android:label="fragment_questionuno"
+        tools:layout="@layout/fragment_questionuno" >
+        <action
+            android:id="@+id/action_questionunoFragment_to_questiondosFragment"
+            app:destination="@id/questiondosFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/questiondosFragment"
+        android:name="com.slaytertv.firegym.ui.view.ownworkout.QuestiondosFragment"
+        android:label="fragment_questiondos"
+        tools:layout="@layout/fragment_questiondos" />
+</navigation>

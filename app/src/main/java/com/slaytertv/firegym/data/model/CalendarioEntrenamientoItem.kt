@@ -1,0 +1,41 @@
+package com.slaytertv.firegym.data.model
+
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+data class CalendarioEntrenamientoItem(
+    val calendarioEntrenamiento: List<DiaEntrenamiento>
+)
+
+@Entity(tableName = "calendario_table")
+data class CalendarioEntrenamientoEntity(
+    @PrimaryKey(autoGenerate = true)
+    val calendarioEntrenamiento: List<DiaEntrenamiento>
+)
+
+data class DiaEntrenamiento(
+    val dia: String,
+    val fecha: String,
+    val partesCuerpo: List<ParteCuerpo>
+)
+
+data class ParteCuerpo(
+    val nombre: String,
+    val ejercicios: List<Ejercicio>
+)
+
+data class Ejercicio(
+    val nombre: String,
+    val series: Int,
+    val repeticiones: Int,
+    val peso: String,
+    val progresion: String,
+    val datosDiarios: List<DatosDiarios>
+)
+
+data class DatosDiarios(
+    val fecha: String,
+    val series: Int,
+    val repeticiones: Int,
+    val peso: String
+)
