@@ -8,8 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.slaytertv.firegym.MainActivity
-import com.slaytertv.firegym.R
 import com.slaytertv.firegym.databinding.FragmentMyOwnWorkoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,9 +40,25 @@ class MyOwnWorkoutFragment : Fragment() {
 
     private fun botones() {
         binding.otro.setOnClickListener {
-            val authIntent = Intent(requireContext(), QuestionMyWorkoutActivity::class.java)
-            authLauncher.launch(authIntent)
+       dialog("solo si eres nivel medio,experto o si ya tienes una idea de como preparar una rutina entra aca")
+
         }
+    }
+    fun dialog(msg:String){
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Mensaje")
+            .setMessage(msg)
+            /*.setNeutralButton(resources.getString(android.R.string.cancel)) { dialog, which ->
+                toast("donde apuntas")
+            }*/
+            .setNegativeButton("cancelar") { dialog, which ->
+
+            }
+            .setPositiveButton("aceptar") { dialog, which ->
+                val authIntent = Intent(requireContext(), QuestionMyWorkoutActivity::class.java)
+                authLauncher.launch(authIntent)
+            }
+            .show()
     }
 
 }

@@ -5,11 +5,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.view.ownworkout.MyOwnWorkoutFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <Button
+
+    <ImageButton
+        android:layout_gravity="end"
+        android:src="@drawable/baseline_add_box_24"
         android:id="@+id/otro"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="questionworkout" />
 
 </FrameLayout>
