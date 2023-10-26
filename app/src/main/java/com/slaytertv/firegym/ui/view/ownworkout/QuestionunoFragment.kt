@@ -1,11 +1,16 @@
 package com.slaytertv.firegym.ui.view.ownworkout
 
+import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
+import android.widget.TableLayout
+import android.widget.TableRow
+import android.widget.TextView
 import com.google.android.material.chip.Chip
 import com.slaytertv.firegym.R
 import com.slaytertv.firegym.databinding.FragmentQuestionunoBinding
@@ -75,8 +80,86 @@ class QuestionunoFragment : Fragment() {
             return
         }
         toast("${selectedDays.toString()} ${selectedParts.toString()}")
-        findNavController().navigate(R.id.action_questionunoFragment_to_questiondosFragment)
+        //findNavController().navigate(R.id.action_questionunoFragment_to_questiondosFragment)
+        cargartabla(selectedDays,selectedParts)
 
     }
+
+    private fun cargartabla(cantdia:MutableList<String>,partescuerpo:MutableList<String>) {
+        val semanas = binding.cantsema.text.toString()
+        val diasSemana = cantdia.size
+
+        binding.tableLayout.removeAllViews()
+        val headerRow = TableRow(requireContext())
+        for (i in 0 until cantdia.size) {
+            val headerTextView = TextView(requireContext())
+            headerTextView.text = cantdia[i]
+            headerRow.addView(headerTextView)
+
+            val params = TableRow.LayoutParams(
+                TableRow.LayoutParams.MATCH_PARENT,
+                TableRow.LayoutParams.WRAP_CONTENT
+            )
+            params.setMargins(10, 10, 10, 10)
+            headerTextView.layoutParams = params
+        }
+        binding.tableLayout.addView(headerRow)
+
+        for (i in 0 until semanas.toInt()) {
+            val dataRow = TableRow(requireContext())
+            for (j in 0 until diasSemana) {
+                val textView = TextView(requireContext())
+                textView.gravity = Gravity.CENTER
+                textView.text = "agregar $i, $j"
+                textView.setPadding(16, 8, 16, 8)
+                textView.setBackgroundResource(R.drawable.table_cell_background) // Configura el fondo personalizado
+                textView.setBackgroundColor(Color.RED)
+                dataRow.addView(textView)
+                textView.setOnClickListener {
+                    showBodyPartSelectionDialog(partescuerpo,cantdia,i,j)
+                    //toast("$i, Día $j")
+                }
+
+                // Configura márgenes en el TextView de los datos
+                val params = TableRow.LayoutParams(
+                    TableRow.LayoutParams.MATCH_PARENT,
+                    TableRow.LayoutParams.WRAP_CONTENT
+                )
+                params.setMargins(10, 10, 10, 10) // Establece los márgenes
+                textView.layoutParams = params
+            }
+            binding.tableLayout.addView(dataRow)
+        }
+    }
+
+    private fun showBodyPartSelectionDialog(selectedBodyParts: MutableList<String>,cantdia:MutableList<String>,i:Int,j:Int) {
+        val bodyPartList = selectedBodyParts.toTypedArray()
+        val selectedBodyPartsx = mutableListOf<String>()
+        val checkedItems = BooleanArray(bodyPartList.size)
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Selecciona partes del cuerpo")
+            .setMultiChoiceItems(bodyPartList, checkedItems) { _, which, isChecked ->
+                if (isChecked) {
+                    selectedBodyPartsx.add(bodyPartList[which])
+                } else {
+                    selectedBodyPartsx.remove(bodyPartList[which])
+                }
+            }
+            .setPositiveButton("Aceptar") { _, _ ->
+                // Actualizar la tabla con las partes del cuerpo seleccionadas
+                updateTableWithSelectedBodyParts(selectedBodyPartsx,cantdia,i,j)
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
+    }
+
+    private fun updateTableWithSelectedBodyParts(selectedBodyParts: MutableList<String>,cantdia:MutableList<String>,row:Int,column:Int) {
+        val tableRow = binding.tableLayout.getChildAt(row + 1) as TableRow // El +1 es para omitir la fila de encabezado
+        val cell = tableRow.getChildAt(column) as TextView
+        cell.setBackgroundColor(Color.GREEN)
+        cell.text = selectedBodyParts.joinToString(", ")
+    }
+
 
 }
