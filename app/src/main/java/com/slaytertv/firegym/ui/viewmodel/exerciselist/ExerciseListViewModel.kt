@@ -21,21 +21,8 @@ class ExerciseListViewModel@Inject constructor(
     val repository: ExerciseRepository,
     private val exerciseDao: ExerciseDao
 ): ViewModel() {
-    //creamos una variable privada para la lista mutable en vivo con los items que llegan por noteitem
-    private val _exerciselist = MutableLiveData<UiState<List<ExerciseItem>>>()
-    //variable note con los items de noteitem
-    val exerciselist: LiveData<UiState<List<ExerciseItem>>>
-        get() = _exerciselist
-    private val _updateExerciselist = MutableLiveData<UiState<String>>()
-    val updateExerciselist: LiveData<UiState<String>>
-        get() = _updateExerciselist
-    ///////////////////////////////////////////////////////////////
-    //crear funcion con los items que se devolveran a getnote solo si es de nuestro usuario
-    fun getExerciselist(category:String) {
-        _exerciselist.value = UiState.Loading
-        //a obtener notes le mandamkos nuestro usuario
-        repository.getCateExcersice(category) { _exerciselist.value = it }
-    }
+
+
 
     //obtener todos
     private val _exercisealllist = MutableLiveData<UiState<List<ExerciseItem>>>()

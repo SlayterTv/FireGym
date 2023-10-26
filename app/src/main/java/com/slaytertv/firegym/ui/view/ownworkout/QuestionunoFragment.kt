@@ -79,6 +79,14 @@ class QuestionunoFragment : Fragment() {
             toast("seleccione al menos un dia de la semana para entrenar")
             return
         }
+        if(binding.nomrutina.text.toString().isEmpty()){
+            toast("agregue un nombre para su rutina")
+            return
+        }
+        if(binding.cantsema.text.toString().isEmpty()){
+            toast("agregue la cantidad de semanas")
+            return
+        }
         toast("${selectedDays.toString()} ${selectedParts.toString()}")
         //findNavController().navigate(R.id.action_questionunoFragment_to_questiondosFragment)
         cargartabla(selectedDays,selectedParts)

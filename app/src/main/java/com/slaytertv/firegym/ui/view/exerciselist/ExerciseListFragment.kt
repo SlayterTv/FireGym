@@ -36,7 +36,7 @@ class ExerciseListFragment : Fragment() {
     val adapterexerciseListCatego by lazy {
         ExerciseListCategoAdapter(
             onItemClicked = { pos, item ->
-                llamadoviewmodel(item.tag)
+                //llamadoviewmodel(item.tag)
                 viewModelExerciseList.getExercisesByCategory(item.tag)
             }
         )
@@ -75,10 +75,6 @@ class ExerciseListFragment : Fragment() {
 
             }
         }
-    }
-
-    private fun llamadoviewmodel(tipo:String){
-        viewModelExerciseList.getExerciselist(tipo)
     }
     companion object {
         private const val ARG_CARD_ITEM = "arg_card_item"
