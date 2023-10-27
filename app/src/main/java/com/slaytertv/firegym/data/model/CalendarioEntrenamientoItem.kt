@@ -7,10 +7,14 @@ data class CalendarioEntrenamientoItem(
     val calendarioEntrenamiento: List<DiaEntrenamiento>
 )
 
-@Entity(tableName = "calendario_table")
+@Entity(tableName = "calendario_entrenamiento")
 data class CalendarioEntrenamientoEntity(
     @PrimaryKey(autoGenerate = true)
-    val calendarioEntrenamiento: List<DiaEntrenamiento>
+    val id: Long = 0L,
+    val nomrutina: String,
+    val cantsemana: String,
+    val dias: List<String>?,
+    val partesDelCuerpo: List<String>?
 )
 
 data class DiaEntrenamiento(

@@ -125,6 +125,11 @@
             android:layout_height="wrap_content"
             android:text="next"
             android:id="@+id/otro"/>
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="otro2"
+            android:id="@+id/otro2"/>
 
     </LinearLayout>
 

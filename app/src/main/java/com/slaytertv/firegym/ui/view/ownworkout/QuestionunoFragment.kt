@@ -11,13 +11,19 @@ import android.view.ViewGroup
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
+import androidx.fragment.app.viewModels
 import com.google.android.material.chip.Chip
 import com.slaytertv.firegym.R
+import com.slaytertv.firegym.data.model.CalendarioEntrenamientoEntity
 import com.slaytertv.firegym.databinding.FragmentQuestionunoBinding
+import com.slaytertv.firegym.ui.viewmodel.ownworkout.MyWorkoutViewModel
 import com.slaytertv.firegym.util.toast
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class QuestionunoFragment : Fragment() {
     lateinit var binding: FragmentQuestionunoBinding
+    val viewModel: MyWorkoutViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,7 +35,9 @@ class QuestionunoFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observer()
         botoneNB()
+
 
         val daysOfWeek = listOf("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo")
         for (day in daysOfWeek) {
@@ -52,6 +60,29 @@ class QuestionunoFragment : Fragment() {
         binding.otro.setOnClickListener {
             //findNavController().navigate(R.id.action_questionunoFragment_to_questiondosFragment)
             verificar()
+        }
+        binding.otro2.setOnClickListener {
+            //findNavController().navigate(R.id.action_questionunoFragment_to_questiondosFragment)
+
+            val nuevoCalendario = CalendarioEntrenamientoEntity(
+                nomrutina = "Rutina 1",
+                cantsemana = "4",
+                dias = listOf("Lunes", "Martes", "Miércoles"),
+                partesDelCuerpo = listOf("Pecho", "Espalda")
+            )
+
+            viewModel.insertCalendario(nuevoCalendario)
+            viewModel.getCalendarioWorkout()
+        }
+    }
+    private fun observer() {
+        viewModel.myworkoutalllistroom.observe(viewLifecycleOwner) { state ->
+            if(state.isNotEmpty()){
+                //adapterexerciseList.updateList(state.toMutableList())
+                toast(state.toString())
+            }else{
+                toast("no hay entrenamientos agregados")
+            }
         }
     }
     fun verificar(){
@@ -90,6 +121,8 @@ class QuestionunoFragment : Fragment() {
         toast("${selectedDays.toString()} ${selectedParts.toString()}")
         //findNavController().navigate(R.id.action_questionunoFragment_to_questiondosFragment)
         cargartabla(selectedDays,selectedParts)
+
+
 
     }
 

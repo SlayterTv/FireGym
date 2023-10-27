@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.room.Room
 import com.google.gson.Gson
 import com.slaytertv.firegym.data.repository.AppDatabase
+import com.slaytertv.firegym.data.repository.CalendarioEntrenamientoDao
 import com.slaytertv.firegym.data.repository.ExerciseDao
 import com.slaytertv.firegym.util.SharedPrefConstants
 import dagger.Module
@@ -35,11 +36,16 @@ object AppModule {
         return Room.databaseBuilder(
             context,
             AppDatabase::class.java, "exercise-database"
-        ).build()
+        ).fallbackToDestructiveMigration()
+            .build()
     }
     @Provides
     fun provideExerciseDao(database: AppDatabase): ExerciseDao {
         return database.exerciseDao()
+    }
+    @Provides
+    fun provideCalendarioDao(database: AppDatabase): CalendarioEntrenamientoDao {
+        return database.calendarioEntrenamientoDao()
     }
 
 }
