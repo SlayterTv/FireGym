@@ -14,7 +14,8 @@ data class CalendarioEntrenamientoEntity(
     val nomrutina: String,
     val cantsemana: String,
     val dias: List<String>?,
-    val partesDelCuerpo: List<String>?
+    val partesDelCuerpo: List<String>?,
+    val calendarioEntrenamiento: List<DiaEntrenamiento>
 )
 
 data class DiaEntrenamiento(
@@ -25,7 +26,7 @@ data class DiaEntrenamiento(
 
 data class ParteCuerpo(
     val nombre: String,
-    val ejercicios: List<Ejercicio>
+    //val ejercicios: List<Ejercicio>
 )
 
 data class Ejercicio(

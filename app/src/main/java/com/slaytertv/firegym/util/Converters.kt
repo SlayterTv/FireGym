@@ -4,6 +4,7 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.slaytertv.firegym.data.model.BarDataItem
+import com.slaytertv.firegym.data.model.DiaEntrenamiento
 
 class Converters {
     @TypeConverter
@@ -34,6 +35,25 @@ class Converters {
 
     @TypeConverter
     fun toBarDataItemList(list: List<BarDataItem>?): String? {
+        if (list == null) {
+            return null
+        }
+        return Gson().toJson(list)
+    }
+
+
+
+    @TypeConverter
+    fun fromDiaEntrenamientoList(value: String?): List<DiaEntrenamiento>? {
+        if (value == null) {
+            return null
+        }
+        val listType = object : TypeToken<List<DiaEntrenamiento>>() {}.type
+        return Gson().fromJson(value, listType)
+    }
+
+    @TypeConverter
+    fun toDiaEntrenamientoList(list: List<DiaEntrenamiento>?): String? {
         if (list == null) {
             return null
         }

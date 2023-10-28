@@ -3,6 +3,7 @@ package com.slaytertv.firegym.ui.view.ownworkout
 import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,6 +16,9 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.chip.Chip
 import com.slaytertv.firegym.R
 import com.slaytertv.firegym.data.model.CalendarioEntrenamientoEntity
+import com.slaytertv.firegym.data.model.CalendarioEntrenamientoItem
+import com.slaytertv.firegym.data.model.DiaEntrenamiento
+import com.slaytertv.firegym.data.model.ParteCuerpo
 import com.slaytertv.firegym.databinding.FragmentQuestionunoBinding
 import com.slaytertv.firegym.ui.viewmodel.ownworkout.MyWorkoutViewModel
 import com.slaytertv.firegym.util.toast
@@ -24,6 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class QuestionunoFragment : Fragment() {
     lateinit var binding: FragmentQuestionunoBinding
     val viewModel: MyWorkoutViewModel by viewModels()
+    var cuacl:Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,15 +69,28 @@ class QuestionunoFragment : Fragment() {
         binding.otro2.setOnClickListener {
             //findNavController().navigate(R.id.action_questionunoFragment_to_questiondosFragment)
 
-            val nuevoCalendario = CalendarioEntrenamientoEntity(
-                nomrutina = "Rutina 1",
-                cantsemana = "4",
+           /* val nuevoCalendario = CalendarioEntrenamientoEntity(
+                nomrutina = binding.nomrutina.text.toString(),
+                cantsemana = binding.cantsema.text.toString(),
                 dias = listOf("Lunes", "Martes", "Miércoles"),
                 partesDelCuerpo = listOf("Pecho", "Espalda")
             )
 
+            /*val calendarioEntrenamientoEntity = CalendarioEntrenamientoItem(
+                calendarioEntrenamiento = listOf(
+                    DiaEntrenamiento(
+                        dia = "lunes",
+                        fecha = "",
+                        partesCuerpo = listOf(
+                            ParteCuerpo(nombre = "Pecho"),
+                            ParteCuerpo(nombre = "Pecho")
+                        )
+                    )
+                )
+            )*/
+
             viewModel.insertCalendario(nuevoCalendario)
-            viewModel.getCalendarioWorkout()
+            viewModel.getCalendarioWorkout()*/
         }
     }
     private fun observer() {
@@ -120,10 +138,110 @@ class QuestionunoFragment : Fragment() {
         }
         toast("${selectedDays.toString()} ${selectedParts.toString()}")
         //findNavController().navigate(R.id.action_questionunoFragment_to_questiondosFragment)
-        cargartabla(selectedDays,selectedParts)
+        val listaDiasEntrenamiento = mutableListOf<DiaEntrenamiento>()
+        if(cuacl){
+
+
+            if (areAllCellsNonNull(binding.tableLayout)) {
+
+            } else {
+                toast("rellene todos los campos del calendario")
+                return
+            }
+
+            // Lista para almacenar los días de entrenamiento
+
+
+// Asegúrate de tener suficientes filas (semanas) y columnas (días de la semana) en tu tabla
+            val totalSemanas = binding.tableLayout.childCount
+            val totalDiasSemana = selectedDays.size
+
+// Obtiene los nombres de los días de la semana desde la primera fila
+            val headerRow = binding.tableLayout.getChildAt(0) as? TableRow
+            val nombresDiasSemana = mutableListOf<String>()
+            if (headerRow != null) {
+                for (j in 0 until totalDiasSemana) {
+                    val textView = headerRow.getChildAt(j) as? TextView
+                    if (textView != null) {
+                        nombresDiasSemana.add(textView.text.toString())
+                    }
+                }
+            }
+// Recorre las filas desde la segunda fila en adelante
+            for (i in 1 until totalSemanas) {
+                val row = binding.tableLayout.getChildAt(i)
+
+                if (row is TableRow) {
+                    // Recorre las celdas de partes del cuerpo a partir de la columna 0
+                    for (j in 0 until totalDiasSemana) {
+                        val textView = row.getChildAt(j) as? TextView
+                        if (textView != null) {
+                            val parteCuerpoNombre = textView.text.toString()
+                            val dia = nombresDiasSemana[j] // Utiliza el nombre del día de la semana
+                            val fecha = "" // Agrega tu lógica de fecha aquí
+
+                            val parteCuerpo = ParteCuerpo(parteCuerpoNombre)
+                            val diaEntrenamiento = DiaEntrenamiento(dia, fecha, listOf(parteCuerpo))
+
+                            listaDiasEntrenamiento.add(diaEntrenamiento)
+                            Log.e("TAG",listaDiasEntrenamiento.toString())
+                        }
+                    }
+                }
+            }
 
 
 
+
+
+
+        }else{
+            cargartabla(selectedDays,selectedParts)
+            cuacl = true
+            return
+        }
+
+        guardartabla(selectedDays,selectedParts,listaDiasEntrenamiento)
+
+
+
+
+
+
+    }
+    fun guardartabla(
+        cantdia: MutableList<String>,
+        partescuerpo: MutableList<String>,
+        listaDiasEntrenamiento: MutableList<DiaEntrenamiento>
+    ){
+        val nuevoCalendario = CalendarioEntrenamientoEntity(
+            nomrutina = binding.nomrutina.text.toString(),
+            cantsemana = binding.cantsema.text.toString(),
+            dias = cantdia,
+            partesDelCuerpo = partescuerpo,
+            calendarioEntrenamiento = listaDiasEntrenamiento
+        )
+
+
+
+
+        viewModel.insertCalendario(nuevoCalendario)
+        viewModel.getCalendarioWorkout()
+    }
+    fun areAllCellsNonNull(tableLayout: TableLayout): Boolean {
+        for (i in 0 until tableLayout.childCount) {
+            val row = tableLayout.getChildAt(i) as? TableRow
+
+            if (row != null) {
+                for (j in 0 until row.childCount) {
+                    val textView = row.getChildAt(j) as? TextView
+                    if (textView?.text.isNullOrBlank()) {
+                        return false // Si encuentra una celda con texto nulo o vacío, retorna false
+                    }
+                }
+            }
+        }
+        return true // Si todas las celdas contienen texto, retorna true
     }
 
     private fun cargartabla(cantdia:MutableList<String>,partescuerpo:MutableList<String>) {
@@ -151,17 +269,14 @@ class QuestionunoFragment : Fragment() {
             for (j in 0 until diasSemana) {
                 val textView = TextView(requireContext())
                 textView.gravity = Gravity.CENTER
-                textView.text = "agregar $i, $j"
+                textView.text = ""
                 textView.setPadding(16, 8, 16, 8)
                 textView.setBackgroundResource(R.drawable.table_cell_background) // Configura el fondo personalizado
                 textView.setBackgroundColor(Color.RED)
                 dataRow.addView(textView)
                 textView.setOnClickListener {
                     showBodyPartSelectionDialog(partescuerpo,cantdia,i,j)
-                    //toast("$i, Día $j")
                 }
-
-                // Configura márgenes en el TextView de los datos
                 val params = TableRow.LayoutParams(
                     TableRow.LayoutParams.MATCH_PARENT,
                     TableRow.LayoutParams.WRAP_CONTENT
