@@ -13,6 +13,7 @@ import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import com.slaytertv.firegym.R
 import com.slaytertv.firegym.data.model.CalendarioEntrenamientoEntity
@@ -21,6 +22,8 @@ import com.slaytertv.firegym.data.model.DiaEntrenamiento
 import com.slaytertv.firegym.data.model.ParteCuerpo
 import com.slaytertv.firegym.databinding.FragmentQuestionunoBinding
 import com.slaytertv.firegym.ui.viewmodel.ownworkout.MyWorkoutViewModel
+import com.slaytertv.firegym.util.clickdisable
+import com.slaytertv.firegym.util.clickenable
 import com.slaytertv.firegym.util.toast
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,8 +45,6 @@ class QuestionunoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         observer()
         botoneNB()
-
-
         val daysOfWeek = listOf("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo")
         for (day in daysOfWeek) {
             val chip = Chip(requireContext())
@@ -65,32 +66,6 @@ class QuestionunoFragment : Fragment() {
         binding.otro.setOnClickListener {
             //findNavController().navigate(R.id.action_questionunoFragment_to_questiondosFragment)
             verificar()
-        }
-        binding.otro2.setOnClickListener {
-            //findNavController().navigate(R.id.action_questionunoFragment_to_questiondosFragment)
-
-           /* val nuevoCalendario = CalendarioEntrenamientoEntity(
-                nomrutina = binding.nomrutina.text.toString(),
-                cantsemana = binding.cantsema.text.toString(),
-                dias = listOf("Lunes", "Martes", "Miércoles"),
-                partesDelCuerpo = listOf("Pecho", "Espalda")
-            )
-
-            /*val calendarioEntrenamientoEntity = CalendarioEntrenamientoItem(
-                calendarioEntrenamiento = listOf(
-                    DiaEntrenamiento(
-                        dia = "lunes",
-                        fecha = "",
-                        partesCuerpo = listOf(
-                            ParteCuerpo(nombre = "Pecho"),
-                            ParteCuerpo(nombre = "Pecho")
-                        )
-                    )
-                )
-            )*/
-
-            viewModel.insertCalendario(nuevoCalendario)
-            viewModel.getCalendarioWorkout()*/
         }
     }
     private fun observer() {
@@ -136,27 +111,23 @@ class QuestionunoFragment : Fragment() {
             toast("agregue la cantidad de semanas")
             return
         }
-        toast("${selectedDays.toString()} ${selectedParts.toString()}")
-        //findNavController().navigate(R.id.action_questionunoFragment_to_questiondosFragment)
+        //toast("${selectedDays.toString()} ${selectedParts.toString()}")
         val listaDiasEntrenamiento = mutableListOf<DiaEntrenamiento>()
         if(cuacl){
 
-
             if (areAllCellsNonNull(binding.tableLayout)) {
-
+                findNavController().navigate(R.id.action_questionunoFragment_to_questiondosFragment)
             } else {
                 toast("rellene todos los campos del calendario")
                 return
             }
 
             // Lista para almacenar los días de entrenamiento
-
-
-// Asegúrate de tener suficientes filas (semanas) y columnas (días de la semana) en tu tabla
+            // Asegúrate de tener suficientes filas (semanas) y columnas (días de la semana) en tu tabla1
             val totalSemanas = binding.tableLayout.childCount
             val totalDiasSemana = selectedDays.size
 
-// Obtiene los nombres de los días de la semana desde la primera fila
+            // Obtiene los nombres de los días de la semana desde la primera fila
             val headerRow = binding.tableLayout.getChildAt(0) as? TableRow
             val nombresDiasSemana = mutableListOf<String>()
             if (headerRow != null) {
@@ -184,16 +155,10 @@ class QuestionunoFragment : Fragment() {
                             val diaEntrenamiento = DiaEntrenamiento(dia, fecha, listOf(parteCuerpo))
 
                             listaDiasEntrenamiento.add(diaEntrenamiento)
-                            Log.e("TAG",listaDiasEntrenamiento.toString())
                         }
                     }
                 }
             }
-
-
-
-
-
 
         }else{
             cargartabla(selectedDays,selectedParts)
@@ -202,9 +167,6 @@ class QuestionunoFragment : Fragment() {
         }
 
         guardartabla(selectedDays,selectedParts,listaDiasEntrenamiento)
-
-
-
 
 
 
@@ -221,10 +183,6 @@ class QuestionunoFragment : Fragment() {
             partesDelCuerpo = partescuerpo,
             calendarioEntrenamiento = listaDiasEntrenamiento
         )
-
-
-
-
         viewModel.insertCalendario(nuevoCalendario)
         viewModel.getCalendarioWorkout()
     }

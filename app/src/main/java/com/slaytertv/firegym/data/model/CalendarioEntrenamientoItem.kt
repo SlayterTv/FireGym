@@ -26,7 +26,7 @@ data class DiaEntrenamiento(
 
 data class ParteCuerpo(
     val nombre: String,
-    //val ejercicios: List<Ejercicio>
+    val ejercicios: List<Ejercicio>? = null
 )
 
 data class Ejercicio(
@@ -35,7 +35,7 @@ data class Ejercicio(
     val repeticiones: Int,
     val peso: String,
     val progresion: String,
-    val datosDiarios: List<DatosDiarios>
+    val datosDiarios: List<DatosDiarios>? = null
 )
 
 data class DatosDiarios(
