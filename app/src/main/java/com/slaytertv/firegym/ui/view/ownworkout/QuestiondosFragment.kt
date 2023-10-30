@@ -10,8 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import com.slaytertv.firegym.MainActivity
+import com.slaytertv.firegym.data.model.CalendarioEntrenamientoEntity
 import com.slaytertv.firegym.databinding.FragmentQuestiondosBinding
 import com.slaytertv.firegym.util.SharedPrefConstants
+import com.slaytertv.firegym.util.toast
 
 class QuestiondosFragment : Fragment() {
     lateinit var binding: FragmentQuestiondosBinding
@@ -29,6 +31,9 @@ class QuestiondosFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentQuestiondosBinding.inflate(layoutInflater)
+
+        val calendario = arguments?.getParcelable<CalendarioEntrenamientoEntity>("calendario")
+        toast(calendario.toString())
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

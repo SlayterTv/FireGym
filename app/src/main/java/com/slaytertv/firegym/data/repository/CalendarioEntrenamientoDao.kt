@@ -10,6 +10,9 @@ import com.slaytertv.firegym.data.model.CalendarioEntrenamientoEntity
 interface CalendarioEntrenamientoDao {
     @Insert
     fun insertCalendario(calendario: CalendarioEntrenamientoEntity)
+    @Query("SELECT MAX(id) FROM calendario_entrenamiento")
+    fun getLastCalendarioId(): Long?
+
     @Query("SELECT * FROM calendario_entrenamiento")
     fun getAllCalendarios(): List<CalendarioEntrenamientoEntity>
 

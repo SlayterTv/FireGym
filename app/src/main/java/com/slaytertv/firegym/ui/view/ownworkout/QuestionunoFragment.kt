@@ -17,13 +17,12 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import com.slaytertv.firegym.R
 import com.slaytertv.firegym.data.model.CalendarioEntrenamientoEntity
-import com.slaytertv.firegym.data.model.CalendarioEntrenamientoItem
 import com.slaytertv.firegym.data.model.DiaEntrenamiento
 import com.slaytertv.firegym.data.model.ParteCuerpo
 import com.slaytertv.firegym.databinding.FragmentQuestionunoBinding
 import com.slaytertv.firegym.ui.viewmodel.ownworkout.MyWorkoutViewModel
-import com.slaytertv.firegym.util.clickdisable
-import com.slaytertv.firegym.util.clickenable
+import com.slaytertv.firegym.util.UiState
+import com.slaytertv.firegym.util.dialogx
 import com.slaytertv.firegym.util.toast
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -64,18 +63,30 @@ class QuestionunoFragment : Fragment() {
 
     private fun botoneNB() {
         binding.otro.setOnClickListener {
-            //findNavController().navigate(R.id.action_questionunoFragment_to_questiondosFragment)
+
             verificar()
         }
     }
-    private fun observer() {
-        viewModel.myworkoutalllistroom.observe(viewLifecycleOwner) { state ->
-            if(state.isNotEmpty()){
-                //adapterexerciseList.updateList(state.toMutableList())
-                toast(state.toString())
-            }else{
-                toast("no hay entrenamientos agregados")
+    fun observer() {
+        viewModel.insertWorkout.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Loading -> {
+                    //handleLoading(isLoading = true)
+                }
+
+                is UiState.Failure -> {
+                    //handleLoading(isLoading = false)
+                    dialogx(state.error)
+                }
+
+                is UiState.Sucess -> {
+                    toast(state.data.toString())
+                    val bundle = Bundle()
+                    bundle.putParcelable("calendario", state.data) // Agrega tus datos aquí
+                    findNavController().navigate(R.id.action_questionunoFragment_to_questiondosFragment, bundle)
+                }
             }
+
         }
     }
     fun verificar(){
@@ -116,7 +127,7 @@ class QuestionunoFragment : Fragment() {
         if(cuacl){
 
             if (areAllCellsNonNull(binding.tableLayout)) {
-                findNavController().navigate(R.id.action_questionunoFragment_to_questiondosFragment)
+
             } else {
                 toast("rellene todos los campos del calendario")
                 return
@@ -184,7 +195,6 @@ class QuestionunoFragment : Fragment() {
             calendarioEntrenamiento = listaDiasEntrenamiento
         )
         viewModel.insertCalendario(nuevoCalendario)
-        viewModel.getCalendarioWorkout()
     }
     fun areAllCellsNonNull(tableLayout: TableLayout): Boolean {
         for (i in 0 until tableLayout.childCount) {
