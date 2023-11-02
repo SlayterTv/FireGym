@@ -80,7 +80,6 @@ class QuestionunoFragment : Fragment() {
                 }
 
                 is UiState.Sucess -> {
-                    toast(state.data.toString())
                     val bundle = Bundle()
                     bundle.putParcelable("calendario", state.data) // Agrega tus datos aquí
                     findNavController().navigate(R.id.action_questionunoFragment_to_questiondosFragment, bundle)

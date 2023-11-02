@@ -17,5 +17,17 @@
         android:text="next"
         android:id="@+id/otro"/>
 
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TableLayout
+            android:id="@+id/tableLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <!-- Aquí van tus filas y celdas de la tabla -->
+        </TableLayout>
+
+    </HorizontalScrollView>
+
 
 </LinearLayout>
