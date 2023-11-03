@@ -52,7 +52,7 @@ class QuestionunoFragment : Fragment() {
             binding.chipGroup.addView(chip)
         }
 
-        val bodyPart = listOf("neck", "shoulders", "trapezius", "chest", "back", "spinae", "biceps", "triceps", "forearm", "abs", "leg", "calf", "hips", "cardio", "fullbody")
+        val bodyPart = listOf("neck", "shoulders", "trapezius", "chest", "back", "erector-spinae", "biceps", "triceps", "forearm", "abs", "leg", "calf", "hip", "cardio", "full-body")
         for (part in bodyPart) {
             val chip = Chip(requireContext())
             chip.text = part

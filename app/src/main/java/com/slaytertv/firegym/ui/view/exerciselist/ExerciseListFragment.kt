@@ -18,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ExerciseListFragment : Fragment() {
-    val TAG :String ="HomeFragment"
+    val TAG :String ="ExerciseListFragment"
     //creamos binding
     lateinit var binding: FragmentExerciseListBinding
 

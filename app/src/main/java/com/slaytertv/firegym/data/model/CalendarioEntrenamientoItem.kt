@@ -38,6 +38,7 @@ data class ParteCuerpo(
 data class Ejercicio(
     val nombre: String,
     val series: Int,
+    val imagen:String,
     val repeticiones: Int,
     val peso: String,
     val progresion: String,

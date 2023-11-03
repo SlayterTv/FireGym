@@ -1,6 +1,7 @@
 package com.slaytertv.firegym.ui.view.ownworkout
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -10,19 +11,27 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TableLayout
+import android.widget.Button
 import android.widget.TableRow
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.slaytertv.firegym.MainActivity
 import com.slaytertv.firegym.R
 import com.slaytertv.firegym.data.model.CalendarioEntrenamientoEntity
 import com.slaytertv.firegym.data.model.DiaEntrenamiento
+import com.slaytertv.firegym.data.model.Ejercicio
 import com.slaytertv.firegym.databinding.FragmentQuestiondosBinding
+import com.slaytertv.firegym.ui.viewmodel.ownworkout.OwnWorkoutViewModel
 import com.slaytertv.firegym.util.SharedPrefConstants
-import com.slaytertv.firegym.util.toast
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class QuestiondosFragment : Fragment() {
+    val TAG:String="QuestiondosFragment"
     lateinit var binding: FragmentQuestiondosBinding
     private val authLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -31,6 +40,18 @@ class QuestiondosFragment : Fragment() {
             requireActivity().finish()
         }
     }
+
+    val viewModelExerciseList: OwnWorkoutViewModel by viewModels()
+    val adapterexerciseList by lazy {
+        QuestionListCategoAdapter(
+            onItemClick = {pos,item ->
+
+
+            }
+        )
+    }
+
+    private lateinit var currentDialog: Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +63,7 @@ class QuestiondosFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observer()
         recuperardatos()
         botoneNB()
 
@@ -62,8 +84,6 @@ class QuestiondosFragment : Fragment() {
         )
 
 
-        toast(nuevoCalendario.toString())
-        // En el segundo fragment (cuando tengas los datos de ejercicios y datosDiarios)
         //nuevoCalendario.ejercicios = listaEjercicios
         //nuevoCalendario.datosDiarios = listaDatosDiarios
 
@@ -111,43 +131,96 @@ class QuestiondosFragment : Fragment() {
                         val diaEntrenamiento = tabla[row][col]
 
                         val parteCuerpoNombres = diaEntrenamiento.partesCuerpo.map { it.nombre }
-                        val nombresConcatenados = parteCuerpoNombres.joinToString("\n").replace(",","\n")
+                        val nombresConcatenados2 = parteCuerpoNombres.joinToString(",").replace(" ","")
 
+                        val elementos = nombresConcatenados2.split(",")
+                        for (elemento in elementos) {
+                            val x = elemento.trim().replace(" ", "").lowercase()
 
-                        val textView = TextView(requireContext())
-                        textView.gravity = Gravity.CENTER
-                        textView.setPadding(16, 8, 16, 8)
-                        textView.setBackgroundResource(R.drawable.table_cell_background)
-                        textView.setBackgroundColor(Color.RED)
-                        textView.text = "$nombresConcatenados \n"
+                            val textView = TextView(requireContext())
+                            textView.gravity = Gravity.CENTER
+                            textView.setPadding(8, 8, 8, 8)
+                            textView.setBackgroundResource(R.drawable.table_cell_background)
+                            textView.setBackgroundColor(Color.RED)
+                            textView.text = "$x"
 
+                            textView.setOnClickListener {
+                                // Abre el diálogo con los ejercicios para el elemento 'x'
+                                //openExerciseDialog(x)
+                                viewModelExerciseList.getExercisesByCategory(x)
 
+                            }
 
+                            // Puedes personalizar la apariencia de los TextView según tus necesidades
+                            val params = TableRow.LayoutParams(
+                                TableRow.LayoutParams.MATCH_PARENT,
+                                TableRow.LayoutParams.WRAP_CONTENT
+                            )
+                            params.setMargins(4, 4, 4, 4) // Establece los márgenes
+                            textView.layoutParams = params
 
-                        // Puedes personalizar la apariencia de los TextView según tus necesidades
-                        // Por ejemplo, puedes establecer márgenes, colores, etc.
+                            // Agrega el TextView a la vista actual (por ejemplo, a tu TableRow o a algún otro contenedor).
+                            tableRow.addView(textView)
+                        }
 
-                        tableRow.addView(textView)
-
-                        val params = TableRow.LayoutParams(
-                            TableRow.LayoutParams.MATCH_PARENT,
-                            TableRow.LayoutParams.WRAP_CONTENT
-                        )
-                        params.setMargins(10, 10, 10, 10) // Establece los márgenes
-                        textView.layoutParams = params
                     }
+
+
 
                     tableLayout.addView(tableRow)
                 }
             }
         }
 
-
-
-
-
-
     }
+
+    fun observer(){
+        viewModelExerciseList.exerciselistroom.observe(viewLifecycleOwner){state ->
+            if (!state.isNullOrEmpty()) {
+                adapterexerciseList.updateList(state.toMutableList())
+
+                // Los datos están disponibles, puedes mostrar el diálogo
+                currentDialog = Dialog(requireContext())
+                currentDialog.setContentView(R.layout.exercise_dialog_layout)
+
+                val recyclerView = currentDialog.findViewById<RecyclerView>(R.id.exerciseRecyclerView)
+                val staggeredGridLayoutManagerC = StaggeredGridLayoutManager(1, LinearLayoutManager.HORIZONTAL)
+                recyclerView.layoutManager = staggeredGridLayoutManagerC
+                recyclerView.adapter =adapterexerciseList
+
+                currentDialog.show()
+
+                val button = currentDialog.findViewById<Button>(R.id.aplicar)
+                button.setOnClickListener {
+                    applySelections()
+                }
+            }
+
+        }
+    }
+    private fun applySelections() {
+        val selectedExercises = adapterexerciseList.getSelectedItems()
+
+
+        // Realiza acciones con los ejercicios seleccionados
+        for (exercise in selectedExercises) {
+            // Haz algo con el ejercicio (por ejemplo, agrégalo a una lista)
+            val x = Ejercicio(
+                nombre = exercise.name,
+                series = 0,
+                imagen = exercise.foto.toString(),
+                repeticiones = 0,
+                peso = "",
+                progresion = ""
+            )
+            println(x)
+        }
+
+        // Cierra el diálogo
+        currentDialog.dismiss()
+    }
+
+
 
     private fun botoneNB() {
 
