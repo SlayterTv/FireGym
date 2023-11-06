@@ -42,6 +42,7 @@ data class Ejercicio(
     val repeticiones: Int,
     val peso: String,
     val progresion: String,
+    var isSelected: Boolean = false,
     val datosDiarios: List<DatosDiarios>? = null
 ):Parcelable
 @Parcelize

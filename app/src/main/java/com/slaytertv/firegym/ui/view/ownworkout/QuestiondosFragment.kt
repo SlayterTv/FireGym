@@ -205,15 +205,8 @@ class QuestiondosFragment : Fragment() {
         // Realiza acciones con los ejercicios seleccionados
         for (exercise in selectedExercises) {
             // Haz algo con el ejercicio (por ejemplo, agrégalo a una lista)
-            val x = Ejercicio(
-                nombre = exercise.name,
-                series = 0,
-                imagen = exercise.foto.toString(),
-                repeticiones = 0,
-                peso = "",
-                progresion = ""
-            )
-            println(x)
+
+            println(exercise)
         }
 
         // Cierra el diálogo

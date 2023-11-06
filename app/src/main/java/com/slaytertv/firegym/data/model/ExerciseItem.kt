@@ -44,5 +44,6 @@ data class ExerciseEntity(
     val muscle_group: List<String>? = null,
     val spec_group: List<String>? = null,
     val bar_data: List<BarDataItem>? = null,
-    var name: String
+    var name: String,
+    var isSelected: Boolean = false // Nuevo campo para rastrear la selección
 ): Parcelable
