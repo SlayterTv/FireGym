@@ -24,7 +24,7 @@ class ExerciseListViewModel@Inject constructor(
 
 
 
-    //obtener todos
+    //obtener todos los
     private val _exercisealllist = MutableLiveData<UiState<List<ExerciseItem>>>()
     val exercisealllist: LiveData<UiState<List<ExerciseItem>>>
         get() = _exercisealllist
@@ -47,4 +47,24 @@ class ExerciseListViewModel@Inject constructor(
     }
 
 
+
+    private val _exerciseupdateroom = MutableLiveData<UiState<ExerciseEntity>>()
+    val exerciseupdateroom: LiveData<UiState<ExerciseEntity>>
+        get() = _exerciseupdateroom
+    fun updateExerciseSelection(exercise: ExerciseEntity, isSelected: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                exercise.isSelected = isSelected
+                println(isSelected)
+                exerciseDao.updateExercise(exercise)
+                withContext(Dispatchers.Main){
+                    _exerciseupdateroom.value = UiState.Sucess(exercise)
+                }
+            }catch (e:Exception){
+                withContext(Dispatchers.Main){
+                    _exerciseupdateroom.value = UiState.Failure("Error al actualizar el ejercicio: ${e.message}")
+                }
+            }
+        }
+    }
 }

@@ -30,6 +30,11 @@ class ExerciseListFragment : Fragment() {
                     putParcelable(ARG_CARD_ITEM, item)
                 }
                 findNavController().navigate(R.id.action_exerciseListFragment_to_exerciseFragment,bundle)
+            },
+            onCheckBoxClicked = { pos, boolean,item ->
+                println("$pos   $boolean   $item")
+
+                viewModelExerciseList.updateExerciseSelection(item, boolean)
             }
         )
     }
@@ -74,6 +79,21 @@ class ExerciseListFragment : Fragment() {
             }else{
 
             }
+        }
+
+        viewModelExerciseList.exerciseupdateroom.observe(viewLifecycleOwner){ state ->
+            when(state){
+                is UiState.Sucess -> {
+                    println("se selecciono o deselecciono el ejercicio")
+                }
+                is UiState.Failure -> {
+                    println("no se modifico los datos")
+                }
+                else -> {
+                    println("no se Actualizo los datos")
+                }
+            }
+
         }
     }
     companion object {

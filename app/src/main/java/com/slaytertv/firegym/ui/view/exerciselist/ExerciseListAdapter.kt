@@ -10,6 +10,7 @@ import com.slaytertv.firegym.databinding.ItemExerciselistBinding
 
 class ExerciseListAdapter(
     val onItemClicked: (Int, ExerciseEntity) -> Unit,
+    val onCheckBoxClicked: (Int, Boolean, ExerciseEntity) -> Unit
 ) :RecyclerView.Adapter<ExerciseListAdapter.MyViewHolder>() {
     private var list: MutableList<ExerciseEntity> = arrayListOf()
     override fun onCreateViewHolder(
@@ -39,6 +40,15 @@ class ExerciseListAdapter(
                 RoundedCorners(25)
             ).into(binding.exerciseImage)
             binding.exerciseImage.setOnClickListener { onItemClicked.invoke(adapterPosition,item) }
+
+            // Configura el estado del CheckBox
+            binding.exerciseCheckBox.isChecked = item.isSelected
+
+            // Establece un listener para el CheckBox
+            binding.exerciseCheckBox.setOnCheckedChangeListener { _, isChecked ->
+                onCheckBoxClicked.invoke(adapterPosition, isChecked,item)
+            }
+
         }
     }
 
