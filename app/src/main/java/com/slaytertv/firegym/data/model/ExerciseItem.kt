@@ -31,6 +31,16 @@ data class ExerciseListItem(
     val tag:String=""
 ): Parcelable
 
+@Parcelize
+data class DatosExactosdiario(
+    val fecha: String,
+    val fechahora: String,
+    val serie: String,
+    val rep: Int,
+    val peso: String,
+    val conayuda: Boolean,
+    val tipoentrenamiento:String
+):Parcelable
 
 @Parcelize
 @Entity(tableName = "exercise_table")
@@ -45,5 +55,11 @@ data class ExerciseEntity(
     val spec_group: List<String>? = null,
     val bar_data: List<BarDataItem>? = null,
     var name: String,
-    var isSelected: Boolean = false // Nuevo campo para rastrear la selección
+    var isSelected: Boolean = false, // Nuevo campo para rastrear la selección
+    var datosExactosdiario: List<DatosExactosdiario>? = null,
+    var serie: Int = 3,
+    var repeticion: Int = 10,
+    var peso: Double = 2.0
+
 ): Parcelable
+

@@ -67,4 +67,32 @@ class ExerciseListViewModel@Inject constructor(
             }
         }
     }
+
+
+
+    private val _exerciseupdatedatoiniroom = MutableLiveData<UiState<ExerciseEntity>>()
+    val exerciseupdatedatoiniroom: LiveData<UiState<ExerciseEntity>>
+        get() = _exerciseupdatedatoiniroom
+    fun updateExerciseDatosIni(exercise: ExerciseEntity, seriex:Int,repex:Int,pesox:Double) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+
+                exercise.serie = seriex
+                exercise.repeticion = repex
+                exercise.peso = pesox
+                println("$seriex $repex $pesox")
+
+                exerciseDao.updateExercise(exercise)
+                withContext(Dispatchers.Main){
+                    _exerciseupdatedatoiniroom.value = UiState.Sucess(exercise)
+                }
+            }catch (e:Exception){
+                withContext(Dispatchers.Main){
+                    _exerciseupdatedatoiniroom.value = UiState.Failure("Error al actualizar el ejercicio: ${e.message}")
+                }
+            }
+        }
+    }
+
+
 }
