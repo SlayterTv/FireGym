@@ -32,8 +32,6 @@ class ExerciseListFragment : Fragment() {
                 findNavController().navigate(R.id.action_exerciseListFragment_to_exerciseFragment,bundle)
             },
             onCheckBoxClicked = { pos, boolean,item ->
-                println("$pos   $boolean   $item")
-
                 viewModelExerciseList.updateExerciseSelection(item, boolean)
             }
         )
@@ -77,23 +75,22 @@ class ExerciseListFragment : Fragment() {
             if(state.isNotEmpty()){
                 adapterexerciseList.updateList(state.toMutableList())
             }else{
-
+                toast("no se actualizo, revise su conexion a internet")
             }
         }
 
         viewModelExerciseList.exerciseupdateroom.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Sucess -> {
-                    println("se selecciono o deselecciono el ejercicio")
+                    if(state.data.isSelected) toast("se selecciono") else toast("se deselecciono")
                 }
                 is UiState.Failure -> {
-                    println("no se modifico los datos")
+                    toast("no se modifico la seleccion")
                 }
                 else -> {
-                    println("no se Actualizo los datos")
+                    toast("revise su conexion a internet")
                 }
             }
-
         }
     }
     companion object {

@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
 import android.widget.Button
 import android.widget.TableRow
 import android.widget.TextView
@@ -42,16 +43,12 @@ class QuestiondosFragment : Fragment() {
     }
 
     val viewModelExerciseList: OwnWorkoutViewModel by viewModels()
-    val adapterexerciseList by lazy {
-        QuestionListCategoAdapter(
-            onItemClick = {pos,item ->
+    val adapterexerciseList: QuestionListCategoAdapter = QuestionListCategoAdapter()
 
-
-            }
-        )
-    }
 
     private lateinit var currentDialog: Dialog
+
+    private lateinit var adaptedList: List<Ejercicio>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,7 +69,7 @@ class QuestiondosFragment : Fragment() {
     private fun recuperardatos() {
         //val calendario = arguments?.getParcelable<CalendarioEntrenamientoEntity>("calendario")
         val cardItem = arguments?.getParcelable<CalendarioEntrenamientoEntity>(QuestiondosFragment.ARG_Qustion_1)
-
+        viewModelExerciseList.getAllExercisesByCategoryisselec()
 
         // En el primer fragment
         val nuevoCalendario = CalendarioEntrenamientoEntity(
@@ -147,7 +144,7 @@ class QuestiondosFragment : Fragment() {
                             textView.setOnClickListener {
                                 // Abre el diálogo con los ejercicios para el elemento 'x'
                                 //openExerciseDialog(x)
-                                viewModelExerciseList.getExercisesByCategory(x)
+                                viewModelExerciseList.getExercisesByCategoryisselec(x)
 
                             }
 
@@ -184,40 +181,45 @@ class QuestiondosFragment : Fragment() {
                 currentDialog.setContentView(R.layout.exercise_dialog_layout)
 
                 val recyclerView = currentDialog.findViewById<RecyclerView>(R.id.exerciseRecyclerView)
-                val staggeredGridLayoutManagerC = StaggeredGridLayoutManager(1, LinearLayoutManager.HORIZONTAL)
+                val staggeredGridLayoutManagerC = StaggeredGridLayoutManager(2, LinearLayoutManager.HORIZONTAL)
                 recyclerView.layoutManager = staggeredGridLayoutManagerC
                 recyclerView.adapter =adapterexerciseList
 
                 currentDialog.show()
-
-                val button = currentDialog.findViewById<Button>(R.id.aplicar)
-                button.setOnClickListener {
-                    applySelections()
-                }
             }
-
-        }
-    }
-    private fun applySelections() {
-        val selectedExercises = adapterexerciseList.getSelectedItems()
-
-
-        // Realiza acciones con los ejercicios seleccionados
-        for (exercise in selectedExercises) {
-            // Haz algo con el ejercicio (por ejemplo, agrégalo a una lista)
-
-            println(exercise)
         }
 
-        // Cierra el diálogo
-        currentDialog.dismiss()
+
+
+        viewModelExerciseList.exercisealllistroom.observe(viewLifecycleOwner){state ->
+            if (!state.isNullOrEmpty()) {
+                adaptedList = state.map { originalEjercicio ->
+                    // Aquí adaptas cada elemento a la nueva estructura Ejercicio
+                    Ejercicio(
+                        nombre = originalEjercicio.id.toString(),
+                        tipo = originalEjercicio.category,
+                        series = originalEjercicio.serie,
+                        repeticiones = originalEjercicio.repeticion,
+                        peso = originalEjercicio.peso.toString(),
+                        progresion = ""
+                    )
+                }
+                println(adaptedList)
+            }
+        }
     }
-
-
 
     private fun botoneNB() {
 
         binding.otro.setOnClickListener {
+
+
+
+
+
+
+
+
             val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
             val isFirstRun = sharedPreferences.getBoolean(SharedPrefConstants.SLIDER_INICIAL, true)
             if (isFirstRun) {

@@ -37,12 +37,11 @@ data class ParteCuerpo(
 @Parcelize
 data class Ejercicio(
     val nombre: String,
+    val tipo:String,
     val series: Int,
-    val imagen:String,
     val repeticiones: Int,
     val peso: String,
     val progresion: String,
-    var isSelected: Boolean = false,
     val datosDiarios: List<DatosDiarios>? = null
 ):Parcelable
 @Parcelize
@@ -52,3 +51,4 @@ data class DatosDiarios(
     val repeticiones: Int,
     val peso: String
 ):Parcelable
+

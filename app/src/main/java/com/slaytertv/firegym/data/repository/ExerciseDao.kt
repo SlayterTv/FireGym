@@ -25,6 +25,9 @@ interface ExerciseDao {
     @Query("SELECT * FROM exercise_table WHERE category = :category  AND isSelected = 1")
     fun getExercisesByCategoryisSelected(category: String):List<ExerciseEntity>
 
+    @Query("SELECT * FROM exercise_table WHERE isSelected = 1")
+    fun getAllExercisesByCategoryisSelected():List<ExerciseEntity>
+
 
     @Update
     fun updateExercise(exercise: ExerciseEntity)

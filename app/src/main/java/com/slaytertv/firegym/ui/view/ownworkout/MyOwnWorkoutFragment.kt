@@ -40,8 +40,7 @@ class MyOwnWorkoutFragment : Fragment() {
 
     private fun botones() {
         binding.otro.setOnClickListener {
-       dialog("solo si eres nivel medio,experto o si ya tienes una idea de como preparar una rutina entra aca")
-
+            dialog("Crea tu propia rutina")
         }
     }
     fun dialog(msg:String){

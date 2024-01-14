@@ -58,7 +58,6 @@ class ExerciseFragment : Fragment() {
                 toast("agregue el peso base que maneja")
                 return@setOnClickListener
             }
-            toast("$cardItem ${setrepetiTextView.text.toString()} ${setserieTextView.text.toString()} ${setpesoTextView.text.toString()} ")
             viewModelExerciseList.updateExerciseDatosIni(cardItem!!, setserieTextView.text.toString().toInt() , setrepetiTextView.text.toString().toInt() ,setpesoTextView.text.toString().toDouble())
         }
     }
@@ -112,7 +111,7 @@ class ExerciseFragment : Fragment() {
         viewModelExerciseList.exerciseupdatedatoiniroom.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Sucess -> {
-                    println("se modifico los datos")
+                    toast("se modifico los datos")
                 }
                 is UiState.Failure -> {
                     println("no se modifico los datos")

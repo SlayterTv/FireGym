@@ -7,25 +7,18 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Lista de Ejercicios"
+        android:text="Ejercicios seleccionados"
         android:gravity="center"
         android:textSize="20sp"
-        android:padding="16dp"/>
+        android:padding="4dp"/>
 
     <!-- RecyclerView para mostrar la lista de ejercicios -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/exerciseRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:padding="16dp"/>
+        android:padding="4dp"/>
 
     <!-- Botón de cierre o cualquier otro control adicional (opcional) -->
-    <Button
-        android:id="@+id/aplicar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Aplicar"
-        android:onClick="applySelections" />
 
 </LinearLayout>
