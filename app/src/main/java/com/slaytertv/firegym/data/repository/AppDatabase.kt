@@ -7,7 +7,7 @@ import com.slaytertv.firegym.data.model.CalendarioEntrenamientoEntity
 import com.slaytertv.firegym.data.model.ExerciseEntity
 import com.slaytertv.firegym.util.Converters
 
-@Database(entities = [ExerciseEntity::class, CalendarioEntrenamientoEntity::class], version = 2, exportSchema = false)
+@Database(entities = [ExerciseEntity::class, CalendarioEntrenamientoEntity::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun exerciseDao(): ExerciseDao

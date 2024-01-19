@@ -18,31 +18,33 @@ data class CalendarioEntrenamientoEntity(
     val cantsemana: String,
     val dias: List<String>?,
     val partesDelCuerpo: List<String>?,
+    val estado: String,
     val calendarioEntrenamiento: List<DiaEntrenamiento>
 ):Parcelable
 
 @Parcelize
 data class DiaEntrenamiento(
     val dia: String,
-    val fecha: String,
+    val estado: String ,
     val partesCuerpo: List<ParteCuerpo>
 ):Parcelable
 
 @Parcelize
 data class ParteCuerpo(
     val nombre: String,
-    val ejercicios: List<Ejercicio>? = null
+    var ejercicios: List<Ejercicio>? = null
 ):Parcelable
 
 @Parcelize
 data class Ejercicio(
-    val nombre: String,
+    val id: String,
     val tipo:String,
     val series: Int,
     val repeticiones: Int,
     val peso: String,
-    val progresion: String,
-    val datosDiarios: List<DatosDiarios>? = null
+    val estado:String,
+    val progresion: String
+    //,    val datosDiarios: List<DatosDiarios>? = null
 ):Parcelable
 @Parcelize
 data class DatosDiarios(

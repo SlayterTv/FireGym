@@ -3,7 +3,6 @@ package com.slaytertv.firegym.ui.view.ownworkout
 import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import com.slaytertv.firegym.R
@@ -20,17 +18,13 @@ import com.slaytertv.firegym.data.model.CalendarioEntrenamientoEntity
 import com.slaytertv.firegym.data.model.DiaEntrenamiento
 import com.slaytertv.firegym.data.model.ParteCuerpo
 import com.slaytertv.firegym.databinding.FragmentQuestionunoBinding
-import com.slaytertv.firegym.ui.viewmodel.ownworkout.MyWorkoutViewModel
-import com.slaytertv.firegym.util.UiState
-import com.slaytertv.firegym.util.dialogx
 import com.slaytertv.firegym.util.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class QuestionunoFragment : Fragment() {
     lateinit var binding: FragmentQuestionunoBinding
-    val viewModel: MyWorkoutViewModel by viewModels()
-    var cuacl:Boolean = false
+    private var cuacl:Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,7 +36,6 @@ class QuestionunoFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observer()
         botoneNB()
         val daysOfWeek = listOf("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo")
         for (day in daysOfWeek) {
@@ -63,32 +56,10 @@ class QuestionunoFragment : Fragment() {
 
     private fun botoneNB() {
         binding.otro.setOnClickListener {
-
             verificar()
         }
     }
-    fun observer() {
-        viewModel.insertWorkout.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is UiState.Loading -> {
-                    //handleLoading(isLoading = true)
-                }
-
-                is UiState.Failure -> {
-                    //handleLoading(isLoading = false)
-                    dialogx(state.error)
-                }
-
-                is UiState.Sucess -> {
-                    val bundle = Bundle()
-                    bundle.putParcelable("calendario", state.data) // Agrega tus datos aquí
-                    findNavController().navigate(R.id.action_questionunoFragment_to_questiondosFragment, bundle)
-                }
-            }
-
-        }
-    }
-    fun verificar(){
+    private fun verificar(){
         val selectedDays = mutableListOf<String>()
         for (i in 0 until binding.chipGroup.childCount) {
             val chip = binding.chipGroup.getChildAt(i) as Chip
@@ -159,11 +130,18 @@ class QuestionunoFragment : Fragment() {
                         if (textView != null) {
                             val parteCuerpoNombre = textView.text.toString()
                             val dia = nombresDiasSemana[j] // Utiliza el nombre del día de la semana
-                            val fecha = "" // Agrega tu lógica de fecha aquí
+                            val estado = "pendiente" // Agrega tu lógica de fecha aquí
 
-                            val parteCuerpo = ParteCuerpo(parteCuerpoNombre)
-                            val diaEntrenamiento = DiaEntrenamiento(dia, fecha, listOf(parteCuerpo))
+                            val elementos = parteCuerpoNombre.split(",")
+                            val partesCuerpoList = mutableListOf<ParteCuerpo>()
 
+                            for (elemento in elementos) {
+                                val x = elemento.trim().replace(" ", "").lowercase()
+                                //viewModelExerciseList.getExercisesByCategoryisselec(x)
+                                println(x)
+                                partesCuerpoList.add(ParteCuerpo(x,null))
+                            }
+                            val diaEntrenamiento = DiaEntrenamiento(dia, estado, partesCuerpoList)
                             listaDiasEntrenamiento.add(diaEntrenamiento)
                         }
                     }
@@ -175,13 +153,10 @@ class QuestionunoFragment : Fragment() {
             cuacl = true
             return
         }
-
         guardartabla(selectedDays,selectedParts,listaDiasEntrenamiento)
 
-
-
     }
-    fun guardartabla(
+    private fun guardartabla(
         cantdia: MutableList<String>,
         partescuerpo: MutableList<String>,
         listaDiasEntrenamiento: MutableList<DiaEntrenamiento>
@@ -191,11 +166,15 @@ class QuestionunoFragment : Fragment() {
             cantsemana = binding.cantsema.text.toString(),
             dias = cantdia,
             partesDelCuerpo = partescuerpo,
+            estado = "pendiente",
             calendarioEntrenamiento = listaDiasEntrenamiento
         )
-        viewModel.insertCalendario(nuevoCalendario)
+        //println(nuevoCalendario)
+        val bundle = Bundle()
+        bundle.putParcelable("calendario", nuevoCalendario) // Agrega tus datos aquí
+        findNavController().navigate(R.id.action_questionunoFragment_to_questiondosFragment, bundle)
     }
-    fun areAllCellsNonNull(tableLayout: TableLayout): Boolean {
+    private fun areAllCellsNonNull(tableLayout: TableLayout): Boolean {
         for (i in 0 until tableLayout.childCount) {
             val row = tableLayout.getChildAt(i) as? TableRow
 

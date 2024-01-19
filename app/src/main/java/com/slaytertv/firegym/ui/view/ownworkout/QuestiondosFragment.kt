@@ -41,7 +41,7 @@ class QuestiondosFragment : Fragment() {
             requireActivity().finish()
         }
     }
-
+    //private val viewModel: MyWorkoutViewModel by viewModels()
     val viewModelExerciseList: OwnWorkoutViewModel by viewModels()
     val adapterexerciseList: QuestionListCategoAdapter = QuestionListCategoAdapter()
 
@@ -77,6 +77,7 @@ class QuestiondosFragment : Fragment() {
             cantsemana = cardItem.cantsemana,
             dias = cardItem.dias,
             partesDelCuerpo = cardItem.partesDelCuerpo,
+            estado = "pendiente",
             calendarioEntrenamiento = cardItem.calendarioEntrenamiento
         )
 
@@ -136,10 +137,11 @@ class QuestiondosFragment : Fragment() {
 
                             val textView = TextView(requireContext())
                             textView.gravity = Gravity.CENTER
-                            textView.setPadding(8, 8, 8, 8)
+                            textView.setPadding(4, 4, 4, 4)
                             textView.setBackgroundResource(R.drawable.table_cell_background)
-                            textView.setBackgroundColor(Color.RED)
+                            //textView.setBackgroundColor(Color.RED)
                             textView.text = "$x"
+
 
                             textView.setOnClickListener {
                                 // Abre el diálogo con los ejercicios para el elemento 'x'
@@ -161,8 +163,6 @@ class QuestiondosFragment : Fragment() {
                         }
 
                     }
-
-
 
                     tableLayout.addView(tableRow)
                 }
@@ -189,44 +189,58 @@ class QuestiondosFragment : Fragment() {
             }
         }
 
-
-
         viewModelExerciseList.exercisealllistroom.observe(viewLifecycleOwner){state ->
             if (!state.isNullOrEmpty()) {
                 adaptedList = state.map { originalEjercicio ->
                     // Aquí adaptas cada elemento a la nueva estructura Ejercicio
                     Ejercicio(
-                        nombre = originalEjercicio.id.toString(),
+                        id = originalEjercicio.id.toString(),
                         tipo = originalEjercicio.category,
                         series = originalEjercicio.serie,
                         repeticiones = originalEjercicio.repeticion,
                         peso = originalEjercicio.peso.toString(),
+                        estado = "pendiente",
                         progresion = ""
                     )
                 }
                 println(adaptedList)
             }
         }
+
+        /*viewModel.insertWorkout.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Loading -> {
+                    //handleLoading(isLoading = true)
+                }
+
+                is UiState.Failure -> {
+                    //handleLoading(isLoading = false)
+                    dialogx(state.error)
+                }
+
+                is UiState.Sucess -> {
+                    val bundle = Bundle()
+                    bundle.putParcelable("calendario", state.data) // Agrega tus datos aquí
+                    findNavController().navigate(R.id.action_questionunoFragment_to_questiondosFragment, bundle)
+                }
+            }
+        }*/
+
     }
 
     private fun botoneNB() {
 
         binding.otro.setOnClickListener {
 
-
-
-
-
-
-
-
-            val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+            /*val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
             val isFirstRun = sharedPreferences.getBoolean(SharedPrefConstants.SLIDER_INICIAL, true)
             if (isFirstRun) {
                 sharedPreferences.edit().putBoolean(SharedPrefConstants.SLIDER_INICIAL, false).apply()
             }
             val authIntent = Intent(requireContext(), MainActivity::class.java)
-            authLauncher.launch(authIntent)
+            authLauncher.launch(authIntent)*/
+            a()
+            //viewModel.insertCalendario(nuevoCalendario)
         }
     }
     companion object{
@@ -239,5 +253,42 @@ class QuestiondosFragment : Fragment() {
             fragment.arguments = args
             return fragment
         }
+    }
+
+
+
+    private fun a(){
+        val cardItem = arguments?.getParcelable<CalendarioEntrenamientoEntity>(QuestiondosFragment.ARG_Qustion_1)
+        if (cardItem != null) {
+            val i = cardItem.cantsemana.toInt()
+            val j = cardItem.dias!!.size
+
+            // Verifica que tengas al menos una fila y una columna en la tabla
+            if (i > 0 && j > 0) {
+                val tabla = Array(i) { Array(j) { DiaEntrenamiento("", "", emptyList()) } }
+
+                // Llena la tabla con los datos de cardItem.calendarioEntrenamiento
+                val calendarioEntrenamiento = cardItem.calendarioEntrenamiento
+                for (row in 0 until i) {
+                    for (col in 0 until j) {
+                        val index = row * j + col
+
+                        if (index < calendarioEntrenamiento.size) {
+                            tabla[row][col] = calendarioEntrenamiento[index]
+
+                            for (parteCuerpo in tabla[row][col].partesCuerpo) {
+                                val nombreParteCuerpo = parteCuerpo.nombre
+                                parteCuerpo.ejercicios = obtenerListaEjerciciosPorTipo(nombreParteCuerpo)
+                            }
+                            println(tabla[row][col])
+                            println(cardItem)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    private fun obtenerListaEjerciciosPorTipo(tipoDeseado: String): List<Ejercicio> {
+        return adaptedList.filter { it.tipo == tipoDeseado }
     }
 }
