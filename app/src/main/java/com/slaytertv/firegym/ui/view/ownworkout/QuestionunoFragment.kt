@@ -138,8 +138,8 @@ class QuestionunoFragment : Fragment() {
                             for (elemento in elementos) {
                                 val x = elemento.trim().replace(" ", "").lowercase()
                                 //viewModelExerciseList.getExercisesByCategoryisselec(x)
-                                println(x)
-                                partesCuerpoList.add(ParteCuerpo(x,null))
+                                //println(x)
+                                partesCuerpoList.add(ParteCuerpo(x,"pendiente",null))
                             }
                             val diaEntrenamiento = DiaEntrenamiento(dia, estado, partesCuerpoList)
                             listaDiasEntrenamiento.add(diaEntrenamiento)

@@ -32,6 +32,7 @@ data class DiaEntrenamiento(
 @Parcelize
 data class ParteCuerpo(
     val nombre: String,
+    val estado: String ,
     var ejercicios: List<Ejercicio>? = null
 ):Parcelable
 
