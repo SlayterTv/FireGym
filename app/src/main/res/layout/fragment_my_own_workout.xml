@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.view.ownworkout.MyOwnWorkoutFragment">
-
-
-    <ImageButton
-        android:layout_gravity="end"
-        android:src="@drawable/baseline_add_box_24"
-        android:id="@+id/otro"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="questionworkout" />
-
-</FrameLayout>
+        android:orientation="vertical">
+        <ImageButton
+            android:layout_gravity="end"
+            android:src="@drawable/baseline_add_box_24"
+            android:id="@+id/otro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="questionworkout" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/recyclerentrenamientos"/>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

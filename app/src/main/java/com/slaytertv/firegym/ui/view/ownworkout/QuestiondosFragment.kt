@@ -28,6 +28,7 @@ import com.slaytertv.firegym.ui.viewmodel.ownworkout.OwnWorkoutViewModel
 import com.slaytertv.firegym.util.SharedPrefConstants
 import com.slaytertv.firegym.util.UiState
 import com.slaytertv.firegym.util.dialogx
+import com.slaytertv.firegym.util.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -194,6 +195,7 @@ class QuestiondosFragment : Fragment() {
                     dialogx(state.error)
                 }
                 is UiState.Sucess -> {
+                    toast("Entrenamiento guardado")
                     val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
                     val isFirstRun = sharedPreferences.getBoolean(SharedPrefConstants.SLIDER_INICIAL, true)
                         if (isFirstRun) {
@@ -219,7 +221,8 @@ class QuestiondosFragment : Fragment() {
                 calendarioEntrenamiento = cardItem.calendarioEntrenamiento
             )
             val xx = a(nuevoCalendario)
-            //viewModel.insertCalendario(xx)
+            println("guardae $xx")
+            viewModel.insertCalendario(xx)
         }
     }
     companion object{
