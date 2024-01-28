@@ -16,4 +16,7 @@ interface CalendarioEntrenamientoDao {
     @Query("SELECT * FROM calendario_entrenamiento")
     fun getAllCalendarios(): List<CalendarioEntrenamientoEntity>
 
+    @Query("DELETE FROM calendario_entrenamiento WHERE id = :calendarioId")
+    fun deleteCalendarioById(calendarioId: Long)
+
 }

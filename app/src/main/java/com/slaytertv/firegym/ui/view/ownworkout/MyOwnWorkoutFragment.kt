@@ -2,6 +2,7 @@ package com.slaytertv.firegym.ui.view.ownworkout
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,8 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.slaytertv.firegym.MainActivity
+import com.slaytertv.firegym.data.model.CalendarioEntrenamientoEntity
 import com.slaytertv.firegym.databinding.FragmentMyOwnWorkoutBinding
 import com.slaytertv.firegym.ui.viewmodel.ownworkout.MyWorkoutViewModel
+import com.slaytertv.firegym.util.UiState
 import com.slaytertv.firegym.util.toast
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -33,10 +36,23 @@ class MyOwnWorkoutFragment : Fragment() {
     val adapterentrenamientoList by lazy {
         EntrenamientosListAdapter(
             onItemEdit = { pos, item ->
-                println(item)
+                dialog("Esta seguro que desea editar el entrenamiento?",2,null,item)
             },
             onItemElimina = { pos,item ->
-                println(item)
+                dialog("Esta seguro de eliminar el entrenamiento?",1,item.id,null)
+            },
+            onItemSeleccion = { pos,item ->
+                when(item.estado){
+                    "pendiente" -> {
+                        dialog("Iniciar entrenamiento?",3,null,item)
+                    }
+                    "actualmente" -> {
+                        toast("ya se encuentra seleccionado")
+                    }
+                    "finalizado" -> {
+                        dialog("Iniciar entrenamiento?",3,null,item)
+                    }
+                }
             }
         )
     }
@@ -65,13 +81,26 @@ class MyOwnWorkoutFragment : Fragment() {
     private fun observer() {
         viewModel.myworkoutalllistroom.observe(viewLifecycleOwner){state->
             if(state.isNullOrEmpty()){
-                toast("no hay")
+                toast("no Existen Workouts creados")
                 println(state)
             }else{
-                toast("si hay")
                 adapterentrenamientoList.updateList(state.toMutableList())
                 for(states in state){
                     println(states)
+                }
+            }
+        }
+        //delete
+        viewModel.deleteWorkout.observe(viewLifecycleOwner){state->
+            when(state){
+                is UiState.Sucess -> {
+                    viewModel.getCalendarioWorkout()
+                }
+                is UiState.Failure -> {
+                    println(state.error)
+                }
+                else -> {
+                    println("no se Actualizo los datos")
                 }
             }
         }
@@ -79,22 +108,28 @@ class MyOwnWorkoutFragment : Fragment() {
 
     private fun botones() {
         binding.otro.setOnClickListener {
-            dialog("Crea tu propia rutina")
+            //crear rutina 0
+            //eliminar 1
+            //editar2
+            //inifin3
+            dialog("Crea tu propia rutina",0,null,null)
         }
     }
-    fun dialog(msg:String){
+    fun dialog(msg:String,cuac:Int,item:Long?,itemcompleto:CalendarioEntrenamientoEntity?){
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Mensaje")
             .setMessage(msg)
-            /*.setNeutralButton(resources.getString(android.R.string.cancel)) { dialog, which ->
-                toast("donde apuntas")
-            }*/
             .setNegativeButton("cancelar") { dialog, which ->
 
             }
             .setPositiveButton("aceptar") { dialog, which ->
-                val authIntent = Intent(requireContext(), QuestionMyWorkoutActivity::class.java)
-                authLauncher.launch(authIntent)
+                when(cuac){
+                    0 -> {  val authIntent = Intent(requireContext(), QuestionMyWorkoutActivity::class.java)
+                        authLauncher.launch(authIntent)}
+                    1 -> viewModel.deletetCalendario(item!!.toLong())
+                    2 -> toast(itemcompleto.toString())
+                    3 -> println("3")
+                }
             }
             .show()
     }

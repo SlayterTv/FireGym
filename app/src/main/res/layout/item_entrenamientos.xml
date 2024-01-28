@@ -16,13 +16,20 @@
             android:text="pruebaname"
             android:id="@+id/nomentrenamiento"/>
         <Button
-            android:text="editar"
-            android:id="@+id/editarentrenamiento"
+            android:text="ini"
+            android:id="@+id/inicloseentrenamiento"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
         <Button
+            android:text="ed"
+            android:id="@+id/editarentrenamiento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <ImageButton
             android:text="eliminar"
+            android:src="@drawable/baseline_delete_24"
             android:id="@+id/eliminarentrenamiento"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

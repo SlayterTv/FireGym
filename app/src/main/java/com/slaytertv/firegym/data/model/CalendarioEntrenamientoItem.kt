@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 data class CalendarioEntrenamientoItem(
     val calendarioEntrenamiento: List<DiaEntrenamiento>
 )
-
+//estado = (pendiente, finalizado,actualmente)
 @Parcelize
 @Entity(tableName = "calendario_entrenamiento")
 data class CalendarioEntrenamientoEntity(

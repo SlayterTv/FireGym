@@ -51,5 +51,21 @@ class MyWorkoutViewModel@Inject constructor(
         }
     }
 
+    //delete by iud
+    private val _deleteWorkout = MutableLiveData<UiState<Unit>>()
+    val deleteWorkout: LiveData<UiState<Unit>>
+        get() = _deleteWorkout
+
+    fun deletetCalendario(id:Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                calendarioEntrenamientoDao.deleteCalendarioById(id)
+                _deleteWorkout.postValue(UiState.Sucess(Unit))
+            } catch (e: Exception) {
+                _deleteWorkout.postValue(UiState.Failure("Error al eliminar: ${e.message}"))
+            }
+        }
+    }
+
 
 }
