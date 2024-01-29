@@ -67,5 +67,50 @@ class MyWorkoutViewModel@Inject constructor(
         }
     }
 
+    //update estado by id
+    private val _updateWorkout = MutableLiveData<UiState<Unit>>()
+    val updateWorkout: LiveData<UiState<Unit>>
+        get() = _updateWorkout
+
+    fun updateCalendarioEstadoById(calendarioId: Long, nuevoEstado: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                calendarioEntrenamientoDao.updateCalendarioEstadoById(calendarioId, nuevoEstado)
+                _updateWorkout.postValue(UiState.Sucess(Unit))
+            } catch (e: Exception) {
+                _updateWorkout.postValue(UiState.Failure("Error al actualizar estado: ${e.message}"))
+            }
+        }
+    }
+
+
+    //estado actual
+    private val _hayCalendarioActual = MutableLiveData<Boolean>()
+    val hayCalendarioActual: LiveData<Boolean>
+        get() = _hayCalendarioActual
+
+    fun verificarCalendarioActual() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val count = calendarioEntrenamientoDao.countCalendariosConEstadoActual()
+            _hayCalendarioActual.postValue(count > 0)
+        }
+    }
+
+    //actualizar esrtado actual
+    private val _actualizarEstados = MutableLiveData<UiState<Unit>>()
+    val actualizarEstados: LiveData<UiState<Unit>>
+        get() = _actualizarEstados
+
+    fun actualizarEstadosPendientes() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                calendarioEntrenamientoDao.actualizarEstadosPendientes()
+                _actualizarEstados.postValue(UiState.Sucess(Unit))
+            } catch (e: Exception) {
+                _actualizarEstados.postValue(UiState.Failure("Error al actualizar estados: ${e.message}"))
+            }
+        }
+    }
+
 
 }

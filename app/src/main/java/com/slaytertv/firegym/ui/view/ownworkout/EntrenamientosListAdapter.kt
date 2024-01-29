@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.slaytertv.firegym.R
 import com.slaytertv.firegym.data.model.CalendarioEntrenamientoEntity
 import com.slaytertv.firegym.databinding.ItemEntrenamientosBinding
 
@@ -50,15 +51,18 @@ class EntrenamientosListAdapter(
             }
             when(item.estado){
                 "pendiente" -> {
-                    binding.inicloseentrenamiento.text = "Pendiente"
+                    //binding.inicloseentrenamiento.text = "Pendiente"
+                    binding.inicloseentrenamiento.setImageResource(R.drawable.baseline_check_box_outline_blank_24)
                     binding.inicloseentrenamiento.setBackgroundColor(Color.GRAY)
                 }
                 "actualmente" -> {
-                    binding.inicloseentrenamiento.text = "En proceso"
+                    //binding.inicloseentrenamiento.text = "En proceso"
+                    binding.inicloseentrenamiento.setImageResource(R.drawable.baseline_check_box_24)
                     binding.inicloseentrenamiento.setBackgroundColor(Color.GREEN)
                 }
                 "finalizado" -> {
-                    binding.inicloseentrenamiento.text = "Finalizado"
+                    //binding.inicloseentrenamiento.text = "Finalizado"
+                    binding.inicloseentrenamiento.setImageResource(R.drawable.baseline_check_box_outline_blank_24)
                     binding.inicloseentrenamiento.setBackgroundColor(Color.GRAY)
                 }
             }

@@ -36,21 +36,19 @@ class MyOwnWorkoutFragment : Fragment() {
     val adapterentrenamientoList by lazy {
         EntrenamientosListAdapter(
             onItemEdit = { pos, item ->
-                dialog("Esta seguro que desea editar el entrenamiento?",2,null,item)
+                dialog("Esta seguro que desea editar el entrenamiento?",2,null,item,null)
             },
             onItemElimina = { pos,item ->
-                dialog("Esta seguro de eliminar el entrenamiento?",1,item.id,null)
+                dialog("Esta seguro de eliminar el entrenamiento?",1,item.id,null,null)
             },
             onItemSeleccion = { pos,item ->
-                when(item.estado){
-                    "pendiente" -> {
-                        dialog("Iniciar entrenamiento?",3,null,item)
-                    }
-                    "actualmente" -> {
-                        toast("ya se encuentra seleccionado")
-                    }
-                    "finalizado" -> {
-                        dialog("Iniciar entrenamiento?",3,null,item)
+
+                viewModel.hayCalendarioActual.observe(viewLifecycleOwner){
+                    if(it){
+                        viewModel.actualizarEstadosPendientes()
+                        dialog("ya se encuentra un entrenamiento seleccionado, actualizar?",3,null,item,"actualmente")
+                    }else{
+                        dialog("Iniciar entrenamiento?",3,null,item,"actualmente")
                     }
                 }
             }
@@ -76,6 +74,7 @@ class MyOwnWorkoutFragment : Fragment() {
         binding.recyclerentrenamientos.adapter = adapterentrenamientoList
 
         viewModel.getCalendarioWorkout()
+        viewModel.verificarCalendarioActual()
     }
 
     private fun observer() {
@@ -96,12 +95,47 @@ class MyOwnWorkoutFragment : Fragment() {
                 is UiState.Sucess -> {
                     viewModel.getCalendarioWorkout()
                 }
+                is UiState.Loading -> {
+
+                }
                 is UiState.Failure -> {
                     println(state.error)
                 }
                 else -> {
-                    println("no se Actualizo los datos")
+                    println("no se elimino el entrenamiento")
                 }
+            }
+        }
+
+        viewModel.updateWorkout.observe(viewLifecycleOwner){state->
+            when(state){
+                is UiState.Sucess -> {
+                    viewModel.getCalendarioWorkout()
+                }
+                is UiState.Loading -> {
+
+                }
+                is UiState.Failure -> {
+                    println(state.error)
+                }
+                else -> {
+                    println("no se Actualizo el estado")
+                }
+            }
+        }
+
+        viewModel.actualizarEstados.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Sucess -> {
+                    //viewModel.getCalendarioWorkout()
+                }
+                is UiState.Loading -> {
+
+                }
+                is UiState.Failure -> {
+                    println(state.error)
+                }
+                else -> {}
             }
         }
     }
@@ -112,10 +146,10 @@ class MyOwnWorkoutFragment : Fragment() {
             //eliminar 1
             //editar2
             //inifin3
-            dialog("Crea tu propia rutina",0,null,null)
+            dialog("Crea tu propia rutina",0,null,null,null)
         }
     }
-    fun dialog(msg:String,cuac:Int,item:Long?,itemcompleto:CalendarioEntrenamientoEntity?){
+    fun dialog(msg:String,cuac:Int,item:Long?,itemcompleto:CalendarioEntrenamientoEntity?,estado:String?){
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Mensaje")
             .setMessage(msg)
@@ -128,7 +162,7 @@ class MyOwnWorkoutFragment : Fragment() {
                         authLauncher.launch(authIntent)}
                     1 -> viewModel.deletetCalendario(item!!.toLong())
                     2 -> toast(itemcompleto.toString())
-                    3 -> println("3")
+                    3 -> viewModel.updateCalendarioEstadoById(itemcompleto!!.id.toLong(),estado!!)
                 }
             }
             .show()

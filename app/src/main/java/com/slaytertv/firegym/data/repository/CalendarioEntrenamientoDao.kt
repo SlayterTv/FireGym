@@ -19,4 +19,12 @@ interface CalendarioEntrenamientoDao {
     @Query("DELETE FROM calendario_entrenamiento WHERE id = :calendarioId")
     fun deleteCalendarioById(calendarioId: Long)
 
+    @Query("UPDATE calendario_entrenamiento SET estado = :nuevoEstado WHERE id = :calendarioId")
+    fun updateCalendarioEstadoById(calendarioId: Long, nuevoEstado: String)
+
+    @Query("SELECT COUNT(*) FROM calendario_entrenamiento WHERE estado = 'actualmente'")
+    fun countCalendariosConEstadoActual(): Int
+
+    @Query("UPDATE calendario_entrenamiento SET estado = 'pendiente' WHERE estado = 'actualmente'")
+    fun actualizarEstadosPendientes()
 }
