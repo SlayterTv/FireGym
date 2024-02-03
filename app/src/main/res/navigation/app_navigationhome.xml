@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_navigationhome"
+    app:startDestination="@id/homeEntrenamientoInicioFragment">
+
+    <fragment
+        android:id="@+id/homeEntrenamientoInicioFragment"
+        android:name="com.slaytertv.firegym.ui.view.home.entrena.HomeEntrenamientoInicioFragment"
+        android:label="fragment_home_entrenamiento_inicio"
+        tools:layout="@layout/fragment_home_entrenamiento_inicio" />
+</navigation>
