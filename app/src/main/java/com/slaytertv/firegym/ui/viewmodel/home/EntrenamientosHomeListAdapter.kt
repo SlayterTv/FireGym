@@ -1,12 +1,10 @@
 package com.slaytertv.firegym.ui.viewmodel.home
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.slaytertv.firegym.R
 import com.slaytertv.firegym.data.model.CalendarioEntrenamientoEntity
-import com.slaytertv.firegym.databinding.ItemEntrenamientosBinding
+import com.slaytertv.firegym.databinding.ItemEntrenamientohomeBinding
 
 
 class EntrenamientosHomeListAdapter(
@@ -17,7 +15,7 @@ class EntrenamientosHomeListAdapter(
         parent: ViewGroup,
         viewType: Int
     ): EntrenamientosHomeListAdapter.MyViewHolder {
-        val itemView = ItemEntrenamientosBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val itemView = ItemEntrenamientohomeBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return MyViewHolder(itemView)
     }
 
@@ -38,7 +36,7 @@ class EntrenamientosHomeListAdapter(
         return list.size
     }
 
-    inner class MyViewHolder(val binding: ItemEntrenamientosBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class MyViewHolder(val binding: ItemEntrenamientohomeBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(item:CalendarioEntrenamientoEntity){
             binding.nomentrenamiento.text = item.nomrutina
             binding.inicloseentrenamiento.setOnClickListener{
