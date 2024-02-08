@@ -18,6 +18,9 @@ interface ExerciseDao {
     @Query("SELECT * FROM exercise_table")
     fun getAllExercises(): LiveData<List<ExerciseEntity>>
 
+    @Query("SELECT * FROM exercise_table WHERE id = :id")
+    fun getExercisesById(id: Long):ExerciseEntity
+
     @Query("SELECT * FROM exercise_table WHERE category = :category")
     fun getExercisesByCategory(category: String):List<ExerciseEntity>
 
@@ -27,6 +30,8 @@ interface ExerciseDao {
 
     @Query("SELECT * FROM exercise_table WHERE isSelected = 1")
     fun getAllExercisesByCategoryisSelected():List<ExerciseEntity>
+
+
 
 
     @Update

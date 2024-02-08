@@ -57,9 +57,9 @@ data class ExerciseEntity(
     var name: String,
     var isSelected: Boolean = false, // Nuevo campo para rastrear la selección
     var datosExactosdiario: List<DatosExactosdiario>? = null,
-    var serie: Int = 3,
+    var serie: Int = 4,
     var repeticion: Int = 10,
-    var peso: Double = 2.0
+    var peso: Double = 1.5
 
 ): Parcelable
 

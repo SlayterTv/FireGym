@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -14,6 +15,7 @@ import com.google.android.material.chip.Chip
 import com.slaytertv.firegym.R
 
 import com.slaytertv.firegym.data.model.CalendarioEntrenamientoEntity
+import com.slaytertv.firegym.data.model.Ejercicio
 import com.slaytertv.firegym.data.model.ParteCuerpo
 import com.slaytertv.firegym.databinding.FragmentHomeEntrenamientoInicioBinding
 import com.slaytertv.firegym.ui.view.home.TotalHomeActivity
@@ -25,7 +27,6 @@ class HomeEntrenamientoInicioFragment : Fragment() {
     val TAG:String ="HomeEntrenamientoInicioFragment"
     lateinit var binding: FragmentHomeEntrenamientoInicioBinding
     private val sharedViewModel by activityViewModels<TotalHomeActivity.MySharedViewModel>()
-
 
     //val viewModelExerciseList: HomeEntreIniViewModel by viewModels()
     val adapterHomeentreinipartecuer by lazy {
@@ -43,7 +44,7 @@ class HomeEntrenamientoInicioFragment : Fragment() {
         HomeEntreIniDiasAdapter(
             onItemClicked = { pos, item ->
                 //viewModelExerciseList.getExercisesByCategory(item.tag)
-                toast("acacaca $item")
+                //toast("acacaca $item")
                 adapterHomeentreinipartecuer.updateList(item.partesCuerpo)
             }
         )
@@ -53,13 +54,12 @@ class HomeEntrenamientoInicioFragment : Fragment() {
         HomeEntreIniejerciciAdapter(
             onItemClicked = { pos, item ->
                 //viewModelExerciseList.getExercisesByCategory(item.tag)
-                toast("acacaca $item")
-                //adapterHomeentreinipartecuer.updateList(item.partesCuerpo)
+                openDialog2(item)
+                currentDialog.cancel()
             }
         )
     }
     private lateinit var currentDialog: Dialog
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -133,9 +133,7 @@ class HomeEntrenamientoInicioFragment : Fragment() {
     }
 
     private fun openDialog(item: ParteCuerpo) {
-        toast("1111111 ${item.ejercicios}")
         adapterHomeentreiniejercicios.updateList(item.ejercicios!!.toMutableList())
-
         // Los datos están disponibles, puedes mostrar el diálogo
         currentDialog = Dialog(requireContext())
         currentDialog.setContentView(R.layout.exercise_dialog_layout)
@@ -144,7 +142,15 @@ class HomeEntrenamientoInicioFragment : Fragment() {
         val staggeredGridLayoutManagerC = StaggeredGridLayoutManager(1, LinearLayoutManager.VERTICAL)
         recyclerView.layoutManager = staggeredGridLayoutManagerC
         recyclerView.adapter =adapterHomeentreiniejercicios
-
         currentDialog.show()
+    }
+    private fun openDialog2(item: Ejercicio) {
+        val bundle = Bundle().apply {
+            putParcelable(ARG_CARD_ITEM, item)
+        }
+        findNavController().navigate(R.id.action_homeEntrenamientoInicioFragment_to_homeExerciseInicioFragment,bundle)
+    }
+    companion object {
+        private const val ARG_CARD_ITEM = "arg_card_item"
     }
 }

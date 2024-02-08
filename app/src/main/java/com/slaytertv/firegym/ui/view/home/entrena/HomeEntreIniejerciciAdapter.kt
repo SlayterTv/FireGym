@@ -34,12 +34,13 @@ class HomeEntreIniejerciciAdapter(
         notifyDataSetChanged()
     }
 
-
-
     inner class MyViewHolder(val binding: ItemEjercihomenetreiniBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item:Ejercicio){
-            binding.tdiashomeentreini.text = item.id
+            binding.tdiashomeentreini.text = item.nombre
             binding.tdiashomeentreini.setOnClickListener { onItemClicked.invoke(adapterPosition,item) }
+
+            binding.serie.text = item.series.toString()
+            binding.repet.text = item.repeticiones.toString()
         }
     }
 }

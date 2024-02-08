@@ -39,6 +39,7 @@ data class ParteCuerpo(
 @Parcelize
 data class Ejercicio(
     val id: String,
+    val nombre:String,
     val tipo:String,
     val series: Int,
     val repeticiones: Int,
