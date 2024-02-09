@@ -13,10 +13,18 @@
         <action
             android:id="@+id/action_homeEntrenamientoInicioFragment_to_homeExerciseInicioFragment"
             app:destination="@id/homeExerciseInicioFragment" />
+        <action
+            android:id="@+id/action_homeEntrenamientoInicioFragment_to_homeExerciseActualFragment"
+            app:destination="@id/homeExerciseActualFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeExerciseInicioFragment"
         android:name="com.slaytertv.firegym.ui.view.home.entrena.HomeExerciseInicioFragment"
         android:label="fragment_home_exercise_inicio"
         tools:layout="@layout/fragment_home_exercise_inicio" />
+    <fragment
+        android:id="@+id/homeExerciseActualFragment"
+        android:name="com.slaytertv.firegym.ui.view.home.entrena.HomeExerciseActualFragment"
+        android:label="fragment_home_exercise_actual"
+        tools:layout="@layout/fragment_home_exercise_actual" />
 </navigation>

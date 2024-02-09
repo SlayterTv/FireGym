@@ -27,15 +27,13 @@ class HomeEntrenamientoInicioFragment : Fragment() {
     val TAG:String ="HomeEntrenamientoInicioFragment"
     lateinit var binding: FragmentHomeEntrenamientoInicioBinding
     private val sharedViewModel by activityViewModels<TotalHomeActivity.MySharedViewModel>()
+    var actual:Boolean = false
 
     //val viewModelExerciseList: HomeEntreIniViewModel by viewModels()
     val adapterHomeentreinipartecuer by lazy {
         HomeEntreIniParteCuerAdapter(
             onItemClicked = { pos, item ->
                 openDialog(item)
-            },
-            onCheckBoxClicked = { pos, item ->
-                iniciarejercicio(item)
             }
         )
     }
@@ -43,8 +41,6 @@ class HomeEntrenamientoInicioFragment : Fragment() {
     val adapterHomeentreinidias by lazy {
         HomeEntreIniDiasAdapter(
             onItemClicked = { pos, item ->
-                //viewModelExerciseList.getExercisesByCategory(item.tag)
-                //toast("acacaca $item")
                 adapterHomeentreinipartecuer.updateList(item.partesCuerpo)
             }
         )
@@ -53,12 +49,22 @@ class HomeEntrenamientoInicioFragment : Fragment() {
     val adapterHomeentreiniejercicios by lazy {
         HomeEntreIniejerciciAdapter(
             onItemClicked = { pos, item ->
-                //viewModelExerciseList.getExercisesByCategory(item.tag)
-                openDialog2(item)
                 currentDialog.cancel()
+                openDialog2(item)
+            },
+            onItemComienzo = { pos, item ->
+                if(actual){
+                    currentDialog.cancel()
+                    openDialog3(item)
+                }else{
+                    toast("no puedes iniciar ejercicio,entrenamiento no habilitado")
+                }
             }
         )
     }
+
+
+
     private lateinit var currentDialog: Dialog
 
     override fun onCreateView(
@@ -120,18 +126,13 @@ class HomeEntrenamientoInicioFragment : Fragment() {
             val chip = binding.chipBodypart.getChildAt(i) as? Chip
             chip?.isChecked = calendarioItem.partesDelCuerpo?.contains(chip?.text) == true
         }
-
-        if(calendarioItem.estado == "pendiente" || calendarioItem.estado == "finalizado" ){
-
-        }else{
-
+        when(calendarioItem.estado){
+            "pendiente" -> actual=false
+            "finalizado" -> actual=false
+            "actualmente" -> actual=true
         }
-    }
 
-    private fun iniciarejercicio(item: ParteCuerpo) {
-        toast("222222 $item")
     }
-
     private fun openDialog(item: ParteCuerpo) {
         adapterHomeentreiniejercicios.updateList(item.ejercicios!!.toMutableList())
         // Los datos están disponibles, puedes mostrar el diálogo
@@ -149,6 +150,12 @@ class HomeEntrenamientoInicioFragment : Fragment() {
             putParcelable(ARG_CARD_ITEM, item)
         }
         findNavController().navigate(R.id.action_homeEntrenamientoInicioFragment_to_homeExerciseInicioFragment,bundle)
+    }
+    private fun openDialog3(item: Ejercicio) {
+        val bundle = Bundle().apply {
+            putParcelable(ARG_CARD_ITEM, item)
+        }
+        findNavController().navigate(R.id.action_homeEntrenamientoInicioFragment_to_homeExerciseActualFragment,bundle)
     }
     companion object {
         private const val ARG_CARD_ITEM = "arg_card_item"

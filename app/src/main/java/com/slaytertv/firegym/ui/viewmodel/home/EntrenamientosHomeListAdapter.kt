@@ -1,8 +1,10 @@
 package com.slaytertv.firegym.ui.viewmodel.home
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.slaytertv.firegym.R
 import com.slaytertv.firegym.data.model.CalendarioEntrenamientoEntity
 import com.slaytertv.firegym.databinding.ItemEntrenamientohomeBinding
 
@@ -39,6 +41,20 @@ class EntrenamientosHomeListAdapter(
     inner class MyViewHolder(val binding: ItemEntrenamientohomeBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(item:CalendarioEntrenamientoEntity){
             binding.nomentrenamiento.text = item.nomrutina
+            when(item.estado){
+                "pendiente" -> {
+                    binding.inicloseentrenamiento.setImageResource(R.drawable.baseline_check_box_outline_blank_24)
+                    binding.inicloseentrenamiento.setBackgroundColor(Color.TRANSPARENT)
+                }
+                "actualmente" -> {
+                    binding.inicloseentrenamiento.setImageResource(R.drawable.baseline_check_box_24)
+                    binding.inicloseentrenamiento.setBackgroundColor(Color.GREEN)
+                }
+                "finalizado" -> {
+                    binding.inicloseentrenamiento.setImageResource(R.drawable.baseline_check_box_outline_blank_24)
+                    binding.inicloseentrenamiento.setBackgroundColor(Color.RED)
+                }
+            }
             binding.inicloseentrenamiento.setOnClickListener{
                 onItemSeleccion.invoke(adapterPosition,item)
             }
