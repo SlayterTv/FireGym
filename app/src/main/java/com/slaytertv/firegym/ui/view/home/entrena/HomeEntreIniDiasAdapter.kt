@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.slaytertv.firegym.R
 import com.slaytertv.firegym.data.model.DiaEntrenamiento
 import com.slaytertv.firegym.databinding.ItemDiahomeentreiniBinding
 
@@ -48,6 +47,7 @@ class HomeEntreIniDiasAdapter(
                 }
             }
             binding.tdiashomeentreini.text = item.dia
+            binding.tNdiashomeentreini.text = item.diaN.toString()
             binding.tdiashomeentreini.setOnClickListener { onItemClicked.invoke(adapterPosition,item) }
         }
     }

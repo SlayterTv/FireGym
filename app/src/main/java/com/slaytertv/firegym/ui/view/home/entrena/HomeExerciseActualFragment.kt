@@ -5,8 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.slaytertv.firegym.data.model.Ejercicio
+import com.slaytertv.firegym.data.model.DiaEntrenamiento
 import com.slaytertv.firegym.databinding.FragmentHomeExerciseActualBinding
+import com.slaytertv.firegym.util.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,16 +30,18 @@ class HomeExerciseActualFragment : Fragment() {
     }
 
     private fun recuperar() {
-        val cardItem = arguments?.getParcelable<Ejercicio>(HomeExerciseActualFragment.ARG_CARD_ITEM)
-        binding.cc.text = cardItem?.nombre
-    }
+        val cardItem = arguments?.getParcelable<DiaEntrenamiento>(HomeExerciseActualFragment.ARG_CARD_ITEM)
+        val cardIdx = arguments?.getString("idx")
+        binding.cc.text = "$cardIdx ${cardItem?.dia} ${cardItem?.estado} // \n ${cardItem}"
 
+    }
 
     companion object {
         private const val ARG_CARD_ITEM = "arg_card_item"
-        fun newInstance(cardItem: Ejercicio): HomeExerciseActualFragment {
+        fun newInstance(cardItem: DiaEntrenamiento,idx:String): HomeExerciseActualFragment {
             val args = Bundle().apply {
                 putParcelable(ARG_CARD_ITEM,cardItem)
+                putString("idx",idx)
             }
             val fragment = HomeExerciseActualFragment()
             fragment.arguments = args

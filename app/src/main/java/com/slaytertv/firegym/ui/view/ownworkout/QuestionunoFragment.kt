@@ -141,7 +141,7 @@ class QuestionunoFragment : Fragment() {
                                 //println(x)
                                 partesCuerpoList.add(ParteCuerpo(x,"pendiente",null))
                             }
-                            val diaEntrenamiento = DiaEntrenamiento(dia, estado, partesCuerpoList)
+                            val diaEntrenamiento = DiaEntrenamiento(dia,0, estado, partesCuerpoList)
                             listaDiasEntrenamiento.add(diaEntrenamiento)
                         }
                     }

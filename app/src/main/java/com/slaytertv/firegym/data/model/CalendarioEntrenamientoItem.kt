@@ -25,7 +25,8 @@ data class CalendarioEntrenamientoEntity(
 @Parcelize
 data class DiaEntrenamiento(
     val dia: String,
-    val estado: String ,
+    var diaN:Int,
+    val estado: String,
     val partesCuerpo: List<ParteCuerpo>
 ):Parcelable
 

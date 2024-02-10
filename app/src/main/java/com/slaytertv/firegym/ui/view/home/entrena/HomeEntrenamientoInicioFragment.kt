@@ -15,10 +15,13 @@ import com.google.android.material.chip.Chip
 import com.slaytertv.firegym.R
 
 import com.slaytertv.firegym.data.model.CalendarioEntrenamientoEntity
+import com.slaytertv.firegym.data.model.DiaEntrenamiento
 import com.slaytertv.firegym.data.model.Ejercicio
 import com.slaytertv.firegym.data.model.ParteCuerpo
 import com.slaytertv.firegym.databinding.FragmentHomeEntrenamientoInicioBinding
 import com.slaytertv.firegym.ui.view.home.TotalHomeActivity
+import com.slaytertv.firegym.util.hide
+import com.slaytertv.firegym.util.show
 import com.slaytertv.firegym.util.toast
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,6 +31,8 @@ class HomeEntrenamientoInicioFragment : Fragment() {
     lateinit var binding: FragmentHomeEntrenamientoInicioBinding
     private val sharedViewModel by activityViewModels<TotalHomeActivity.MySharedViewModel>()
     var actual:Boolean = false
+    private var diaAc: DiaEntrenamiento? = null
+    private var idEntre:String = ""
 
     //val viewModelExerciseList: HomeEntreIniViewModel by viewModels()
     val adapterHomeentreinipartecuer by lazy {
@@ -42,6 +47,12 @@ class HomeEntrenamientoInicioFragment : Fragment() {
         HomeEntreIniDiasAdapter(
             onItemClicked = { pos, item ->
                 adapterHomeentreinipartecuer.updateList(item.partesCuerpo)
+                diaAc= item
+                if(actual){
+                    binding.iniciarejercicio.show()
+                }else{
+                    binding.iniciarejercicio.hide()
+                }
             }
         )
     }
@@ -51,20 +62,9 @@ class HomeEntrenamientoInicioFragment : Fragment() {
             onItemClicked = { pos, item ->
                 currentDialog.cancel()
                 openDialog2(item)
-            },
-            onItemComienzo = { pos, item ->
-                if(actual){
-                    currentDialog.cancel()
-                    openDialog3(item)
-                }else{
-                    toast("no puedes iniciar ejercicio,entrenamiento no habilitado")
-                }
             }
         )
     }
-
-
-
     private lateinit var currentDialog: Dialog
 
     override fun onCreateView(
@@ -109,6 +109,17 @@ class HomeEntrenamientoInicioFragment : Fragment() {
             println(" me llegan los datos hasta el fragment $calendarioItem")
             llenardatos(calendarioItem)
         }
+        botones()
+    }
+
+    private fun botones() {
+        binding.iniciarejercicio.setOnClickListener {
+            if(actual){
+                openDialog3(diaAc)
+            }else{
+                toast("no puedes iniciar ejercicio,entrenamiento no habilitado")
+            }
+        }
     }
 
     private fun llenardatos(calendarioItem: CalendarioEntrenamientoEntity) {
@@ -131,6 +142,7 @@ class HomeEntrenamientoInicioFragment : Fragment() {
             "finalizado" -> actual=false
             "actualmente" -> actual=true
         }
+        idEntre = calendarioItem.id.toString()
 
     }
     private fun openDialog(item: ParteCuerpo) {
@@ -151,9 +163,10 @@ class HomeEntrenamientoInicioFragment : Fragment() {
         }
         findNavController().navigate(R.id.action_homeEntrenamientoInicioFragment_to_homeExerciseInicioFragment,bundle)
     }
-    private fun openDialog3(item: Ejercicio) {
+    private fun openDialog3(item: DiaEntrenamiento?) {
         val bundle = Bundle().apply {
             putParcelable(ARG_CARD_ITEM, item)
+            putString("idx",idEntre)
         }
         findNavController().navigate(R.id.action_homeEntrenamientoInicioFragment_to_homeExerciseActualFragment,bundle)
     }

@@ -11,8 +11,7 @@ import com.slaytertv.firegym.databinding.ItemEjercihomenetreiniBinding
 
 
 class HomeEntreIniejerciciAdapter(
-    val onItemClicked: (Int, Ejercicio) -> Unit,
-    val onItemComienzo: (Int, Ejercicio) -> Unit
+    val onItemClicked: (Int, Ejercicio) -> Unit
 ): RecyclerView.Adapter<HomeEntreIniejerciciAdapter.MyViewHolder>() {
     private var list: MutableList<Ejercicio> = arrayListOf()
 
@@ -41,8 +40,6 @@ class HomeEntreIniejerciciAdapter(
         fun bind(item:Ejercicio){
             binding.tdiashomeentreini.text = item.nombre
             binding.tdiashomeentreini.setOnClickListener { onItemClicked.invoke(adapterPosition,item) }
-            binding.ini.setOnClickListener { onItemComienzo.invoke(adapterPosition,item) }
-
             when(item.estado){
                 "pendiente" -> {
                     binding.linearxlayout.setBackgroundColor(Color.TRANSPARENT)
@@ -54,7 +51,6 @@ class HomeEntreIniejerciciAdapter(
                     binding.linearxlayout.setBackgroundColor(Color.RED)
                 }
             }
-
             binding.serie.text = item.series.toString()
             binding.repet.text = item.repeticiones.toString()
         }

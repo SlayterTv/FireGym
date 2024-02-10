@@ -36,10 +36,5 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:hint="100"/>
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/ini"
-            android:src="@drawable/baseline_edit_note_24"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

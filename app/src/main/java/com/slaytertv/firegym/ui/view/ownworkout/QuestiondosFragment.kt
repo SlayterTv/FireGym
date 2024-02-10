@@ -73,7 +73,7 @@ class QuestiondosFragment : Fragment() {
 
             // Verifica que tengas al menos una fila y una columna en la tabla
             if (i > 0 && j > 0) {
-                val tabla = Array(i) { Array(j) { DiaEntrenamiento("", "", emptyList()) } }
+                val tabla = Array(i) { Array(j) { DiaEntrenamiento("", 0,"", emptyList()) } }
 
                 // Llena la tabla con los datos de cardItem.calendarioEntrenamiento
                 val calendarioEntrenamiento = cardItem.calendarioEntrenamiento
@@ -242,9 +242,10 @@ class QuestiondosFragment : Fragment() {
         if (nuevoCalendario != null) {
             val i = nuevoCalendario.cantsemana.toInt()
             val j = nuevoCalendario.dias!!.size
+            var z = 1
             // Verifica que tengas al menos una fila y una columna en la tabla
             if (i > 0 && j > 0) {
-                val tabla = Array(i) { Array(j) { DiaEntrenamiento("", "", emptyList()) } }
+                val tabla = Array(i) { Array(j) { DiaEntrenamiento("",z, "", emptyList()) } }
                 // Llena la tabla con los datos de cardItem.calendarioEntrenamiento
                 val calendarioEntrenamiento = nuevoCalendario.calendarioEntrenamiento
                 for (row in 0 until i) {
@@ -252,12 +253,14 @@ class QuestiondosFragment : Fragment() {
                         val index = row * j + col
                         if (index < calendarioEntrenamiento.size) {
                             tabla[row][col] = calendarioEntrenamiento[index]
+                            tabla[row][col].diaN = z
                             //
                             for (parteCuerpo in tabla[row][col].partesCuerpo) {
                                 val nombreParteCuerpo = parteCuerpo.nombre
                                 parteCuerpo.ejercicios = obtenerListaEjerciciosPorTipo(nombreParteCuerpo)
                             }
                         }
+                        z++
                     }
                 }
             }
