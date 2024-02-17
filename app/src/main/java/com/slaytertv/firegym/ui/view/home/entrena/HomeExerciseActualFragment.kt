@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.slaytertv.firegym.data.model.DiaEntrenamiento
 import com.slaytertv.firegym.data.model.Ejercicio
 import com.slaytertv.firegym.databinding.FragmentHomeExerciseActualBinding
@@ -18,10 +20,14 @@ class HomeExerciseActualFragment : Fragment() {
     val TAG:String = "HomeExerciseActualFragment"
     lateinit var binding: FragmentHomeExerciseActualBinding
 
-    val adapterHomeentreinipartecuer by lazy {
+    private var idxx:Long = 0
+    private var partesCEje: List<Ejercicio> = arrayListOf()
+    var cardItem: DiaEntrenamiento? = null
+
+    private val adapterHomeentreinipartecuer by lazy {
         HomeExerciseParteCuerAdapter(
             onItemClicked = { pos, item ->
-                toast(item.toString())
+                cargardatosdeeje(item)
             }
         )
     }
@@ -38,30 +44,44 @@ class HomeExerciseActualFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val staggeredGridLayoutManagerB = StaggeredGridLayoutManager(1, LinearLayoutManager.HORIZONTAL)
+        val staggeredGridLayoutManagerB = StaggeredGridLayoutManager(1, LinearLayoutManager.VERTICAL)
         binding.recyclertodo.layoutManager = staggeredGridLayoutManagerB
         binding.recyclertodo.adapter = adapterHomeentreinipartecuer
 
         recuperar()
+        botones()
+    }
+
+    private fun botones() {
+        binding.fineje.setOnClickListener {
+            toast(cardItem.toString())
+        }
     }
 
     private fun recuperar() {
-        val cardItem = arguments?.getParcelable<DiaEntrenamiento>(HomeExerciseActualFragment.ARG_CARD_ITEM)
-        val cardIdx = arguments?.getString("idx")
-        binding.cc.text = "$cardIdx ${cardItem?.dia} ${cardItem?.estado} // \n ${cardItem}"
-
-
-
-        var partesCEje: MutableList<Ejercicio> = arrayListOf()
-        for( cuan in cardItem!!.partesCuerpo){
-            println(cuan.ejercicios)
-            for (cuanx in cuan.ejercicios!!){
-                partesCEje.add(cuanx)
+        val cardItem2 = arguments?.getParcelable<DiaEntrenamiento>(HomeExerciseActualFragment.ARG_CARD_ITEM)
+        val idx:Long =arguments?.getString("idx")!!.toLong()
+        when {
+            cardItem2.toString().isNotBlank() -> {
+                cardItem = cardItem2
             }
         }
-
+        when {
+            idx.toString().isNotBlank() -> {
+                idxx = arguments?.getString("idx")!!.toLong()
+            }
+        }
+        partesCEje = cardItem?.partesCuerpo?.flatMap { it.ejercicios ?: emptyList() } ?: emptyList()
         adapterHomeentreinipartecuer.updateList(partesCEje)
-
+    }
+    private fun cargardatosdeeje(item: Ejercicio) {
+        binding.cc.text = item.nombre
+        binding.ser.text = item.series.toString()
+        binding.repe.text = item.repeticiones.toString()
+        binding.estado.text = item.estado
+        Glide.with(this).load(item.imageneje).transform(
+            RoundedCorners(25)
+        ).into(binding.imageView4)
     }
 
     companion object {
@@ -76,5 +96,4 @@ class HomeExerciseActualFragment : Fragment() {
             return fragment
         }
     }
-
 }

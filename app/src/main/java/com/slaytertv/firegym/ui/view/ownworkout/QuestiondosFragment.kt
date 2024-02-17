@@ -173,6 +173,7 @@ class QuestiondosFragment : Fragment() {
                     // Aquí adaptas cada elemento a la nueva estructura Ejercicio
                     Ejercicio(
                         id = originalEjercicio.id.toString(),
+                        imageneje = originalEjercicio.foto,
                         nombre = originalEjercicio.name,
                         tipo = originalEjercicio.category,
                         series = originalEjercicio.serie,
