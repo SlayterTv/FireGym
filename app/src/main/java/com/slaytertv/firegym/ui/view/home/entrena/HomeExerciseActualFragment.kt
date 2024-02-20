@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.slaytertv.firegym.data.model.DatosDiarios
 import com.slaytertv.firegym.data.model.DiaEntrenamiento
 import com.slaytertv.firegym.data.model.Ejercicio
 import com.slaytertv.firegym.databinding.FragmentHomeExerciseActualBinding
@@ -32,6 +33,14 @@ class HomeExerciseActualFragment : Fragment() {
         )
     }
 
+    private val adapterHomeentreinirecycler by lazy {
+        HomeExerciseParteCRecyclerAdapter(
+            onItemClicked = { pos, item ->
+                toast(item.toString())
+            }
+        )
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,6 +56,14 @@ class HomeExerciseActualFragment : Fragment() {
         val staggeredGridLayoutManagerB = StaggeredGridLayoutManager(1, LinearLayoutManager.VERTICAL)
         binding.recyclertodo.layoutManager = staggeredGridLayoutManagerB
         binding.recyclertodo.adapter = adapterHomeentreinipartecuer
+
+
+        val staggeredGridLayoutManagerR = StaggeredGridLayoutManager(1, LinearLayoutManager.VERTICAL)
+        binding.datosdiarios.layoutManager = staggeredGridLayoutManagerR
+        binding.datosdiarios.adapter = adapterHomeentreinirecycler
+
+
+
 
         recuperar()
         botones()
@@ -82,6 +99,10 @@ class HomeExerciseActualFragment : Fragment() {
         Glide.with(this).load(item.imageneje).transform(
             RoundedCorners(25)
         ).into(binding.imageView4)
+
+        item.datosDiarios.let {datosDiarios ->
+            adapterHomeentreinirecycler.updateList(datosDiarios!!)
+        }
     }
 
     companion object {

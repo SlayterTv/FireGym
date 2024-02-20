@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.slaytertv.firegym.MainActivity
 import com.slaytertv.firegym.R
 import com.slaytertv.firegym.data.model.CalendarioEntrenamientoEntity
+import com.slaytertv.firegym.data.model.DatosDiarios
 import com.slaytertv.firegym.data.model.DiaEntrenamiento
 import com.slaytertv.firegym.data.model.Ejercicio
 import com.slaytertv.firegym.databinding.FragmentQuestiondosBinding
@@ -259,6 +260,9 @@ class QuestiondosFragment : Fragment() {
                             for (parteCuerpo in tabla[row][col].partesCuerpo) {
                                 val nombreParteCuerpo = parteCuerpo.nombre
                                 parteCuerpo.ejercicios = obtenerListaEjerciciosPorTipo(nombreParteCuerpo)
+                                for (ej in parteCuerpo.ejercicios.orEmpty()){
+                                    ej.datosDiarios = obtenerListaDatosDiarios(ej)
+                                }
                             }
                         }
                         z++
@@ -270,5 +274,15 @@ class QuestiondosFragment : Fragment() {
     }
     private fun obtenerListaEjerciciosPorTipo(tipoDeseado: String): List<Ejercicio> {
         return adaptedList.filter { it.tipo == tipoDeseado }
+    }
+
+    private fun obtenerListaDatosDiarios(ejercicio: Ejercicio): List<DatosDiarios> {
+        val listaDatosDiarios: MutableList<DatosDiarios> = mutableListOf()
+
+        for (i in 1..ejercicio.series) {
+            listaDatosDiarios.add(DatosDiarios(i, ejercicio.repeticiones, "0", "pendiente", "0"))
+        }
+
+        return listaDatosDiarios
     }
 }

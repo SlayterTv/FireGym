@@ -48,7 +48,7 @@ data class Ejercicio(
     val peso: String,
     val estado:String,
     val progresion: String
-    ,    val datosDiarios: List<DatosDiarios>? = null
+    ,    var datosDiarios: List<DatosDiarios>? = null
 ):Parcelable
 @Parcelize
 data class DatosDiarios(
