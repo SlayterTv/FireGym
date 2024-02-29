@@ -53,9 +53,9 @@ data class Ejercicio(
 @Parcelize
 data class DatosDiarios(
     val series: Int,
-    val repeticiones: Int,
-    val peso: String,
-    val estado:String,
-    val timeacabado:String
+    var repeticiones: Int,
+    var peso: String,
+    var estado:String,
+    var timeacabado:String
 ):Parcelable
 

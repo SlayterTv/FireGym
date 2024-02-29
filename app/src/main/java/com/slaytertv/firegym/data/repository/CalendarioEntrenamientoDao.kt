@@ -4,7 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
+import androidx.room.Update
 import com.slaytertv.firegym.data.model.CalendarioEntrenamientoEntity
+import com.slaytertv.firegym.data.model.Ejercicio
 
 @Dao
 interface CalendarioEntrenamientoDao {
@@ -27,4 +30,12 @@ interface CalendarioEntrenamientoDao {
 
     @Query("UPDATE calendario_entrenamiento SET estado = 'pendiente' WHERE estado = 'actualmente'")
     fun actualizarEstadosPendientes()
+
+
+    @Transaction
+    @Query("SELECT * FROM calendario_entrenamiento WHERE id = :calendarioId")
+    fun obtenerCalendarioPorId(calendarioId: Long): CalendarioEntrenamientoEntity
+
+    @Update
+    fun actualizarCalendario(calendario: CalendarioEntrenamientoEntity)
 }

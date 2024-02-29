@@ -1,8 +1,10 @@
 package com.slaytertv.firegym.ui.view.home.entrena
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.slaytertv.firegym.R
 import com.slaytertv.firegym.data.model.DatosDiarios
 
 import com.slaytertv.firegym.databinding.ItemRecyclerdatosdiariosBinding
@@ -15,8 +17,21 @@ class HomeExerciseParteCRecyclerAdapter(
     inner class MyViewHolder(val binding: ItemRecyclerdatosdiariosBinding):RecyclerView.ViewHolder(binding.root) {
         fun bind(item:DatosDiarios){
             binding.set.text = item.series.toString()
-            binding.set.setOnClickListener {
+            binding.repe.setText(item.repeticiones.toString())
+            binding.peso.setText(item.peso.toString())
+            binding.time.text = item.timeacabado
+
+            binding.estado.setOnClickListener {
                 onItemClicked.invoke(adapterPosition,item)
+            }
+
+            when(item.estado){
+                "pendiente" -> {
+                    binding.estado.setColorFilter(Color.RED)
+                }
+                "finalizado" -> {
+                    binding.estado.setColorFilter(Color.GREEN)
+                }
             }
         }
     }

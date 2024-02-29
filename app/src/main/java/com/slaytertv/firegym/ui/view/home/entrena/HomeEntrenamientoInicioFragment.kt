@@ -144,6 +144,8 @@ class HomeEntrenamientoInicioFragment : Fragment() {
         }
         idEntre = calendarioItem.id.toString()
 
+
+
     }
     private fun openDialog(item: ParteCuerpo) {
         adapterHomeentreiniejercicios.updateList(item.ejercicios!!.toMutableList())

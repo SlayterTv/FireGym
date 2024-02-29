@@ -16,14 +16,14 @@
             android:layout_weight="1"
             android:padding="4dp"
             android:hint="set"/>
-        <EditText
+        <TextView
             android:id="@+id/repe"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="4dp"
             android:hint="repe"/>
-        <EditText
+        <TextView
             android:id="@+id/peso"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
