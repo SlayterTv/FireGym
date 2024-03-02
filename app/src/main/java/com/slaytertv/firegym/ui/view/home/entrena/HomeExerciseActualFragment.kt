@@ -93,6 +93,21 @@ class HomeExerciseActualFragment : Fragment() {
     }
 
     private fun observer() {
+        viewModel.actualizarDiaEntrenamiento.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Loading -> {
+
+                }
+                is UiState.Sucess -> {
+                    toast("cambiando  a activity")
+                }
+                is UiState.Failure -> {
+                    val errorMessage = state.error
+                    println(errorMessage)
+                }
+                else -> {}
+            }
+        }
         viewModel.datosDiariosUpdater.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Sucess -> {
@@ -128,6 +143,13 @@ class HomeExerciseActualFragment : Fragment() {
     private fun botones() {
         binding.fineje.setOnClickListener {
             //toast(cardItem.toString())
+            viewModel.finalizarDiaEntrenamiento(idxx,iddiaentre)
+        }
+        binding.agregarecycler.setOnClickListener {
+            viewModel.agregarDatosDiariosDeEjercicio(idxx, idejercicio,DatosDiarios(10,0,"0.0","pendiente","0.0"),iddiaentre)
+        }
+        binding.quitarrecycler.setOnClickListener {
+            viewModel.quitarDatosDiariosDeEjercicio(idxx, idejercicio,iddiaentre)
         }
     }
 
