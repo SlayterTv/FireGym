@@ -20,6 +20,8 @@ import com.slaytertv.firegym.data.model.Ejercicio
 import com.slaytertv.firegym.databinding.FragmentHomeExerciseActualBinding
 import com.slaytertv.firegym.ui.viewmodel.home.entrena.HomeExerciseActualViewModel
 import com.slaytertv.firegym.util.UiState
+import com.slaytertv.firegym.util.hide
+import com.slaytertv.firegym.util.show
 import com.slaytertv.firegym.util.toast
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,6 +42,7 @@ class HomeExerciseActualFragment : Fragment() {
     private var iddiaentre:Int=0
     private var idpartecuerpo:String=""
     private var idejercicio:String=""
+    private var dixa:String = ""
 
     //adaptadores para seleccionar una paret del cuerpo o actualizar el recycler
     private val adapterHomeentreinipartecuer by lazy {
@@ -60,10 +63,15 @@ class HomeExerciseActualFragment : Fragment() {
                 println(idejercicio)
                 println(item.series)
 
-                val nuevosDatosDiarios: DatosDiarios = DatosDiarios(item.series,item.repeticiones,item.peso,"finalizado","120.2")
-                viewModel.actualizarDatosDiariosDeEjercicio(idxx,idejercicio,item.series-1, nuevosDatosDiarios,iddiaentre)
 
-                abrirDialogoConCronometro(idxx,idejercicio,item.series-1, nuevosDatosDiarios)
+
+                if(dixa == "finalizado"){
+
+                }else{
+                    val nuevosDatosDiarios: DatosDiarios = DatosDiarios(item.series,item.repeticiones,item.peso,"finalizado","120.2")
+                    //viewModel.actualizarDatosDiariosDeEjercicio(idxx,idejercicio,item.series-1, nuevosDatosDiarios,iddiaentre)
+                    abrirDialogoConCronometro(idxx,idejercicio,item.series-1, nuevosDatosDiarios)
+                }
             }
         )
     }
@@ -130,6 +138,14 @@ class HomeExerciseActualFragment : Fragment() {
                     val nuevosDiaEntrenamiento = state.data
                     val partesCEje = nuevosDiaEntrenamiento.partesCuerpo.flatMap { it.ejercicios ?: emptyList() } ?: emptyList()
                     adapterHomeentreinipartecuer.updateList(partesCEje)
+
+                    if(nuevosDiaEntrenamiento.estado =="finalizado"){
+                        binding.fineje.hide()
+                        dixa = nuevosDiaEntrenamiento.estado
+                        toast("ya finalizaste este dia anteriormente")
+                    }else{
+                        binding.fineje.show()
+                    }
                 }
                 is UiState.Failure -> {
                     val errorMessage = state.error
@@ -142,8 +158,18 @@ class HomeExerciseActualFragment : Fragment() {
 
     private fun botones() {
         binding.fineje.setOnClickListener {
-            //toast(cardItem.toString())
-            viewModel.finalizarDiaEntrenamiento(idxx,iddiaentre)
+            val alertDialogBuilder = AlertDialog.Builder(requireContext())
+            alertDialogBuilder.setTitle("Finalizar entrenamiento?")
+            alertDialogBuilder.setMessage("Segur@ de finalizar el dia?.")
+            alertDialogBuilder.setPositiveButton("OK") { dialog, _ ->
+                viewModel.finalizarDiaEntrenamiento(idxx,iddiaentre)
+                dialog.dismiss()
+            }
+            alertDialogBuilder.setNegativeButton("Cancelar") { dialog, _ ->
+                dialog.cancel()
+            }
+            val alertDialog: AlertDialog = alertDialogBuilder.create()
+            alertDialog.show()
         }
         binding.agregarecycler.setOnClickListener {
             viewModel.agregarDatosDiariosDeEjercicio(idxx, idejercicio,DatosDiarios(10,0,"0.0","pendiente","0.0"),iddiaentre)

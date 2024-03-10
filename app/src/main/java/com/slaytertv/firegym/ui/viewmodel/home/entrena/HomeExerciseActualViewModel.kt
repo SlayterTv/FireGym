@@ -339,11 +339,24 @@ class HomeExerciseActualViewModel@Inject constructor(
                             }
                         )
 
+                        // Verifica si todos los días, incluyendo el actual, están finalizados
+                        val todosFinalizados = calendarioActualizado.calendarioEntrenamiento.all { dia ->
+                            dia.estado == "finalizado"
+                        }
+
                         // Actualiza el calendario en la base de datos
                         exerciseDao.actualizarCalendario(calendarioActualizado)
 
                         // Notifica éxito
-                        withContext(Dispatchers.Main) {
+                        if (todosFinalizados) {
+                            // Muestra un Toast indicando que todos los días están finalizados
+                            // Puedes reemplazar este Toast con la lógica que desees
+                            exerciseDao.updateCalendarioEstadoById(calendarioId,"finalizado")
+                            withContext(Dispatchers.Main){
+                                _actualizarDiaEntrenamiento.value = UiState.Sucess(true)
+                            }
+                        } else {
+                            // Finaliza el día actual si no todos los días están finalizados
                             _actualizarDiaEntrenamiento.value = UiState.Sucess(true)
                         }
                     } ?: run {
