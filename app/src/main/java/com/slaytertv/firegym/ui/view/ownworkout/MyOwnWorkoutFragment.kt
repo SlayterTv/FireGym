@@ -42,11 +42,13 @@ class MyOwnWorkoutFragment : Fragment() {
                 dialog("Esta seguro de eliminar el entrenamiento?",1,item.id,null,null)
             },
             onItemSeleccion = { pos,item ->
-
                 viewModel.hayCalendarioActual.observe(viewLifecycleOwner){
                     if(it){
-                        viewModel.actualizarEstadosPendientes()
-                        dialog("ya se encuentra un entrenamiento seleccionado, actualizar?",3,null,item,"actualmente")
+                        when(item.estado){
+                            "pendiente" -> dialog("ya tiene otro entrenamiento iniciado, seguro que quiere activar este entrenamiento?",5,null,item,"actualmente")
+                            "actualmente" -> toast("seleccionado actualmente")
+                            "finalizado" -> dialog("se finalizo el entrenamiento, volver a iniciar entrenamiento?",4,null,item,"actualmente")
+                        }
                     }else{
                         dialog("Iniciar entrenamiento?",3,null,item,"actualmente")
                     }
@@ -127,7 +129,21 @@ class MyOwnWorkoutFragment : Fragment() {
         viewModel.actualizarEstados.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Sucess -> {
-                    //viewModel.getCalendarioWorkout()
+                    viewModel.getCalendarioWorkout()
+                }
+                is UiState.Loading -> {
+
+                }
+                is UiState.Failure -> {
+                    println(state.error)
+                }
+                else -> {}
+            }
+        }
+        viewModel.reiniciarDatosDiarios.observe(viewLifecycleOwner){ state ->
+            when (state) {
+                is UiState.Sucess -> {
+                    viewModel.getCalendarioWorkout()
                 }
                 is UiState.Loading -> {
 
@@ -146,6 +162,9 @@ class MyOwnWorkoutFragment : Fragment() {
             //eliminar 1
             //editar2
             //inifin3
+            //"finalizado"4
+            //pendiente 5
+
             dialog("Crea tu propia rutina",0,null,null,null)
         }
     }
@@ -163,6 +182,15 @@ class MyOwnWorkoutFragment : Fragment() {
                     1 -> viewModel.deletetCalendario(item!!.toLong())
                     2 -> toast(itemcompleto.toString())
                     3 -> viewModel.updateCalendarioEstadoById(itemcompleto!!.id.toLong(),estado!!)
+                    4 -> {
+                        viewModel.reiniciarDatosDiarios(itemcompleto!!.id)
+                        //viewModel.actualizarEstadosPendientes()
+                        //viewModel.updateCalendarioEstadoById(itemcompleto.id.toLong(),estado!!)
+                    }
+                    5 -> {
+                        viewModel.actualizarEstadosPendientes()
+                        viewModel.updateCalendarioEstadoById(itemcompleto!!.id.toLong(),estado!!)
+                    }
                 }
             }
             .show()

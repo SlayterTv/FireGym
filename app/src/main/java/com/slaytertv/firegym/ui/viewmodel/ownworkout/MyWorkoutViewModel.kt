@@ -113,4 +113,84 @@ class MyWorkoutViewModel@Inject constructor(
     }
 
 
+    //////////
+
+
+    private val _reiniciarDatosDiarios = MutableLiveData<UiState<Boolean>>()
+    val reiniciarDatosDiarios: LiveData<UiState<Boolean>>
+        get() = _reiniciarDatosDiarios
+
+    fun reiniciarDatosDiarios(calendarioId: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                // Obtén el calendario por ID
+                val calendario = calendarioEntrenamientoDao.obtenerCalendarioPorId(calendarioId)
+
+                calendario?.let {
+                    it.estado = "pendiente"
+                    // Itera sobre cada día de entrenamiento en el calendario
+                    val calendarioActualizado = it.copy(
+                        calendarioEntrenamiento = it.calendarioEntrenamiento.map { dia ->
+                            dia.copy(
+                                estado = "pendiente"
+                            )
+                            // Itera sobre cada parte del cuerpo en el día de entrenamiento
+                            val partesCuerpoActualizadas = dia.partesCuerpo.map { parteCuerpo ->
+                                parteCuerpo.copy(
+                                    estado = "pendiente"
+                                )
+                                // Itera sobre cada ejercicio en la parte del cuerpo
+                                val ejerciciosActualizados = parteCuerpo.ejercicios?.map { ejercicio ->
+                                    ejercicio.copy(
+                                        estado = "pendiente"
+                                    )
+                                    // Reinicia los datos diarios del ejercicio
+                                    val datosDiariosReiniciados = ejercicio.datosDiarios?.map { datos ->
+                                        datos.copy(
+                                            series = 0,
+                                            repeticiones = 0,
+                                            peso = "0",
+                                            estado = "pendiente",
+                                            timeacabado = "0.0"
+                                        )
+                                    } ?: emptyList()
+
+                                    // Actualiza el ejercicio con los datos diarios reiniciados
+                                    ejercicio.copy(datosDiarios = datosDiariosReiniciados)
+                                } ?: emptyList()
+
+                                // Actualiza la parte del cuerpo con los ejercicios actualizados
+                                parteCuerpo.copy(ejercicios = ejerciciosActualizados)
+                            }
+
+                            // Actualiza el día de entrenamiento con las partes del cuerpo actualizadas
+                            dia.copy(partesCuerpo = partesCuerpoActualizadas)
+                        }
+                    )
+
+                    // Actualiza el calendario en la base de datos con los datos diarios reiniciados
+                    calendarioEntrenamientoDao.actualizarCalendario(calendarioActualizado)
+                    calendarioEntrenamientoDao.actualizarEstadosPendientes()
+                    calendarioEntrenamientoDao.updateCalendarioEstadoById(calendarioId,"actualmente")
+
+                    // Notifica éxito
+                    withContext(Dispatchers.Main) {
+                        _reiniciarDatosDiarios.value = UiState.Sucess(true)
+                    }
+                } ?: run {
+                    // Manejo de error si no se encuentra el calendario
+                    withContext(Dispatchers.Main) {
+                        _reiniciarDatosDiarios.value = UiState.Failure("No se pudo encontrar el calendario")
+                    }
+                }
+            } catch (e: Exception) {
+                // Manejo de error
+                withContext(Dispatchers.Main) {
+                    _reiniciarDatosDiarios.value = UiState.Failure("Error al reiniciar los DatosDiarios: ${e.message}")
+                }
+            }
+        }
+    }
+
+
 }

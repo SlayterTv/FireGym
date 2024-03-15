@@ -63,7 +63,7 @@ class EntrenamientosListAdapter(
                 "finalizado" -> {
                     //binding.inicloseentrenamiento.text = "Finalizado"
                     binding.inicloseentrenamiento.setImageResource(R.drawable.baseline_check_box_outline_blank_24)
-                    binding.inicloseentrenamiento.setBackgroundColor(Color.GRAY)
+                    binding.inicloseentrenamiento.setBackgroundColor(Color.RED)
                 }
             }
         }

@@ -28,7 +28,7 @@ interface CalendarioEntrenamientoDao {
     @Query("SELECT COUNT(*) FROM calendario_entrenamiento WHERE estado = 'actualmente'")
     fun countCalendariosConEstadoActual(): Int
 
-    @Query("UPDATE calendario_entrenamiento SET estado = 'pendiente' WHERE estado = 'actualmente'")
+    @Query("UPDATE calendario_entrenamiento SET estado = 'finalizado' WHERE estado = 'actualmente'")
     fun actualizarEstadosPendientes()
 
 

@@ -18,7 +18,7 @@ data class CalendarioEntrenamientoEntity(
     val cantsemana: String,
     val dias: List<String>?,
     val partesDelCuerpo: List<String>?,
-    val estado: String,
+    var estado: String,
     val calendarioEntrenamiento: List<DiaEntrenamiento>
 ):Parcelable
 
@@ -33,7 +33,7 @@ data class DiaEntrenamiento(
 @Parcelize
 data class ParteCuerpo(
     val nombre: String,
-    val estado: String ,
+    var estado: String ,
     var ejercicios: List<Ejercicio>? = null
 ):Parcelable
 
@@ -46,7 +46,7 @@ data class Ejercicio(
     val series: Int,
     val repeticiones: Int,
     val peso: String,
-    val estado:String,
+    var estado:String,
     val progresion: String
     ,    var datosDiarios: List<DatosDiarios>? = null
 ):Parcelable
